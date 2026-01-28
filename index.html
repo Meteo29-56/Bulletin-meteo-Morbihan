@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Météo Bretagne</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .controls {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .control-group label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .btn-period {
+            background: #e5e7eb;
+            color: #4b5563;
+        }
+
+        .btn-period.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .btn-display {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .btn-display.active {
+            background: #10b981;
+            color: white;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .map-container {
+            position: relative;
+            background: #f0f0f0;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #map-image {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .weather-icon {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            transition: all 0.3s;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .weather-icon:hover {
+            transform: scale(1.2);
+            z-index: 10;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .info-panel {
+            padding: 25px;
+            overflow-y: auto;
+            max-height: 800px;
+        }
+
+        .info-panel h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .selected-city {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .selected-city h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .weather-summary {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        .param-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .param-box {
+            background: rgba(255,255,255,0.2);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .param-label {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .param-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .risk-indicator {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .risk-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .risk-bar {
+            background: rgba(255,255,255,0.3);
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .risk-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #fbbf24, #f59e0b, #ef4444);
+            border-radius: 15px;
+            transition: width 0.5s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .risk-description {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .instructions {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .instructions h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .instructions p {
+            color: #666;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .placeholder-text {
+            color: #999;
+            font-size: 1.2rem;
+            text-align: center;
+            padding: 40px;
+        }
+
+        @media (max-width: 968px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+            .controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌤️ Météo Bretagne</h1>
+            <p class="subtitle">Prévisions interactives</p>
+        </header>
+
+        <div class="controls">
+            <div class="control-group">
+                <label>Période :</label>
+                <button class="btn btn-period active" data-period="matin">🌅 Matin</button>
+                <button class="btn btn-period" data-period="apres-midi">☀️ Après-midi</button>
+            </div>
+            
+            <div class="control-group">
+                <label>Afficher :</label>
+                <button class="btn btn-display active" data-display="temps">☁️ Temps</button>
+                <button class="btn btn-display" data-display="vent">💨 Vent</button>
+                <button class="btn btn-display" data-display="temperature">🌡️ Température</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="card">
+                <div class="map-container" id="map-container">
+                    <!-- L'image de votre carte sera ici -->
+                    <div class="placeholder-text">
+                        📍 Ajoutez votre image de carte<br>
+                        <small>(Modifiez la configuration dans le code)</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card info-panel">
+                <h2>📊 Informations</h2>
+                
+                <div id="city-info">
+                    <div class="instructions">
+                        <h3>👆 Cliquez sur une ville</h3>
+                        <p>Sélectionnez une icône sur la carte pour voir les détails météo complets.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIGURATION MÉTÉO
+        // ============================================
+        const meteoConfig = {
+            // IMAGE DE LA CARTE
+            // Remplacez par le chemin vers votre image
+            carteImage: "", // Exemple: "carte-bretagne.png"
+            
+            // VILLES ET POSITIONS (en pixels depuis le coin supérieur gauche de l'image)
+            villes: {
+                "Lorient": {
+                    x: 200,  // Position X en pixels
+                    y: 300,  // Position Y en pixels
+                    matin: {
+                        temps: "ensoleille",      // Options: ensoleille, nuageux, eclaircies, pluie, orage, neige
+                        vent: 25,                 // km/h
+                        temperature: 12,          // °C
+                        risque: 1                 // 1-4
+                    },
+                    "apres-midi": {
+                        temps: "eclaircies",
+                        vent: 30,
+                        temperature: 15,
+                        risque: 2
+                    }
+                },
+                
+                "Vannes": {
+                    x: 400,
+                    y: 250,
+                    matin: {
+                        temps: "nuageux",
+                        vent: 20,
+                        temperature: 11,
+                        risque: 1
+                    },
+                    "apres-midi": {
+                        temps: "pluie",
+                        vent: 35,
+                        temperature: 13,
+                        risque: 3
+                    }
+                },
+                
+                "Pontivy": {
+                    x: 300,
+                    y: 150,
+                    matin: {
+                        temps: "eclaircies",
+                        vent: 15,
+                        temperature: 10,
+                        risque: 1
+                    },
+                    "apres-midi": {
+                        temps: "ensoleille",
+                        vent: 20,
+                        temperature: 14,
+                        risque: 1
+                    }
+                }
+                
+                // Ajoutez vos autres villes ici avec leurs coordonnées
+            }
+        };
+
+        // Icônes météo (SVG animés)
+        const weatherIcons = {
+            ensoleille: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="20" fill="#FDB813">
+                    <animate attributeName="r" values="20;22;20" dur="2s" repeatCount="indefinite"/>
+                </circle>
+                <g stroke="#FDB813" stroke-width="3" stroke-linecap="round">
+                    <line x1="50" y1="10" x2="50" y2="20"><animate attributeName="y1" values="10;8;10" dur="2s" repeatCount="indefinite"/></line>
+                    <line x1="50" y1="80" x2="50" y2="90"><animate attributeName="y2" values="90;92;90" dur="2s" repeatCount="indefinite"/></line>
+                    <line x1="10" y1="50" x2="20" y2="50"><animate attributeName="x1" values="10;8;10" dur="2s" repeatCount="indefinite"/></line>
+                    <line x1="80" y1="50" x2="90" y2="50"><animate attributeName="x2" values="90;92;90" dur="2s" repeatCount="indefinite"/></line>
+                    <line x1="20" y1="20" x2="27" y2="27"><animate attributeName="x1" values="20;18;20" dur="2s" repeatCount="indefinite"/></line>
+                    <line x1="73" y1="73" x2="80" y2="80"><animate attributeName="x2" values="80;82;80" dur="2s" repeatCount="indefinite"/></line>
+                    <line x1="73" y1="27" x2="80" y2="20"><animate attributeName="x2" values="80;82;80" dur="2s" repeatCount="indefinite"/></line>
+                    <line x1="20" y1="80" x2="27" y2="73"><animate attributeName="x1" values="20;18;20" dur="2s" repeatCount="indefinite"/></line>
+                </g>
+            </svg>`,
+            
+            nuageux: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M25,60 Q25,45 40,45 Q40,35 50,35 Q60,35 60,45 Q75,45 75,60 Q75,70 65,70 L35,70 Q25,70 25,60" 
+                      fill="#B8C6DB" stroke="#95A5B8" stroke-width="2">
+                    <animate attributeName="d" 
+                             values="M25,60 Q25,45 40,45 Q40,35 50,35 Q60,35 60,45 Q75,45 75,60 Q75,70 65,70 L35,70 Q25,70 25,60;
+                                     M25,62 Q25,47 40,47 Q40,37 50,37 Q60,37 60,47 Q75,47 75,62 Q75,72 65,72 L35,72 Q25,72 25,62;
+                                     M25,60 Q25,45 40,45 Q40,35 50,35 Q60,35 60,45 Q75,45 75,60 Q75,70 65,70 L35,70 Q25,70 25,60"
+                             dur="3s" repeatCount="indefinite"/>
+                </path>
+            </svg>`,
+            
+            eclaircies: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="35" cy="35" r="15" fill="#FDB813" opacity="0.8">
+                    <animate attributeName="r" values="15;17;15" dur="2s" repeatCount="indefinite"/>
+                </circle>
+                <path d="M35,60 Q35,50 45,50 Q45,45 50,45 Q55,45 55,50 Q65,50 65,60 Q65,68 58,68 L42,68 Q35,68 35,60" 
+                      fill="#E8F1F5" stroke="#B8C6DB" stroke-width="2">
+                    <animate attributeName="d" 
+                             values="M35,60 Q35,50 45,50 Q45,45 50,45 Q55,45 55,50 Q65,50 65,60 Q65,68 58,68 L42,68 Q35,68 35,60;
+                                     M35,62 Q35,52 45,52 Q45,47 50,47 Q55,47 55,52 Q65,52 65,62 Q65,70 58,70 L42,70 Q35,70 35,62;
+                                     M35,60 Q35,50 45,50 Q45,45 50,45 Q55,45 55,50 Q65,50 65,60 Q65,68 58,68 L42,68 Q35,68 35,60"
+                             dur="3s" repeatCount="indefinite"/>
+                </path>
+            </svg>`,
+            
+            pluie: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M25,50 Q25,35 40,35 Q40,25 50,25 Q60,25 60,35 Q75,35 75,50 Q75,60 65,60 L35,60 Q25,60 25,50" 
+                      fill="#7C98B3" stroke="#5B7C99" stroke-width="2"/>
+                <g stroke="#4A90E2" stroke-width="2.5" stroke-linecap="round">
+                    <line x1="35" y1="65" x2="32" y2="75"><animate attributeName="y1" values="65;70;65" dur="0.8s" repeatCount="indefinite"/></line>
+                    <line x1="50" y1="68" x2="47" y2="78"><animate attributeName="y1" values="68;73;68" dur="0.8s" begin="0.2s" repeatCount="indefinite"/></line>
+                    <line x1="65" y1="65" x2="62" y2="75"><animate attributeName="y1" values="65;70;65" dur="0.8s" begin="0.4s" repeatCount="indefinite"/></line>
+                </g>
+            </svg>`,
+            
+            orage: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M25,50 Q25,35 40,35 Q40,25 50,25 Q60,25 60,35 Q75,35 75,50 Q75,60 65,60 L35,60 Q25,60 25,50" 
+                      fill="#4A5568" stroke="#2D3748" stroke-width="2"/>
+                <path d="M45,62 L42,72 L48,72 L44,82" stroke="#FDB813" stroke-width="3" fill="none" stroke-linecap="round">
+                    <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite"/>
+                </path>
+            </svg>`,
+            
+            neige: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M25,50 Q25,35 40,35 Q40,25 50,25 Q60,25 60,35 Q75,35 75,50 Q75,60 65,60 L35,60 Q25,60 25,50" 
+                      fill="#E8F1F5" stroke="#B8C6DB" stroke-width="2"/>
+                <g fill="#B8C6DB">
+                    <circle cx="35" cy="68" r="3"><animate attributeName="cy" values="68;78;68" dur="2s" repeatCount="indefinite"/></circle>
+                    <circle cx="50" cy="70" r="3"><animate attributeName="cy" values="70;80;70" dur="2s" begin="0.3s" repeatCount="indefinite"/></circle>
+                    <circle cx="65" cy="68" r="3"><animate attributeName="cy" values="68;78;68" dur="2s" begin="0.6s" repeatCount="indefinite"/></circle>
+                </g>
+            </svg>`
+        };
+
+        // Descriptions des risques
+        const risqueDescriptions = {
+            1: "Risque faible - Conditions météo favorables",
+            2: "Risque modéré - Soyez vigilant",
+            3: "Risque élevé - Conditions difficiles attendues",
+            4: "Risque très élevé - Restez prudent"
+        };
+
+        // ============================================
+        // ÉTAT DE L'APPLICATION
+        // ============================================
+        let currentPeriod = "matin";
+        let currentDisplay = "temps";
+        let selectedCity = null;
+
+        // ============================================
+        // INITIALISATION
+        // ============================================
+        function init() {
+            setupControls();
+            loadMap();
+            displayWeatherIcons();
+        }
+
+        function setupControls() {
+            // Boutons période
+            document.querySelectorAll('.btn-period').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.btn-period').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentPeriod = btn.dataset.period;
+                    displayWeatherIcons();
+                    if (selectedCity) showCityInfo(selectedCity);
+                });
+            });
+
+            // Boutons affichage
+            document.querySelectorAll('.btn-display').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.btn-display').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentDisplay = btn.dataset.display;
+                    displayWeatherIcons();
+                });
+            });
+        }
+
+        function loadMap() {
+            const container = document.getElementById('map-container');
+            
+            if (meteoConfig.carteImage) {
+                container.innerHTML = `<img id="map-image" src="${meteoConfig.carteImage}" alt="Carte Bretagne">`;
+            } else {
+                // Garder le placeholder si pas d'image
+            }
+        }
+
+        function displayWeatherIcons() {
+            const container = document.getElementById('map-container');
+            
+            // Supprimer les anciennes icônes
+            document.querySelectorAll('.weather-icon').forEach(icon => icon.remove());
+
+            // Ajouter les nouvelles icônes
+            Object.entries(meteoConfig.villes).forEach(([ville, data]) => {
+                const periodData = data[currentPeriod];
+                const icon = document.createElement('div');
+                icon.className = 'weather-icon';
+                icon.style.left = data.x + 'px';
+                icon.style.top = data.y + 'px';
+                
+                // Choisir l'icône selon le mode d'affichage
+                if (currentDisplay === 'temps') {
+                    icon.innerHTML = weatherIcons[periodData.temps] || weatherIcons.nuageux;
+                } else if (currentDisplay === 'vent') {
+                    icon.innerHTML = `<div style="background: linear-gradient(135deg, #4ade80, #10b981); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+                        ${periodData.vent}<br><span style="font-size: 0.7rem;">km/h</span>
+                    </div>`;
+                } else if (currentDisplay === 'temperature') {
+                    const tempColor = periodData.temperature < 5 ? '#3b82f6' : periodData.temperature < 15 ? '#10b981' : '#f59e0b';
+                    icon.innerHTML = `<div style="background: ${tempColor}; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+                        ${periodData.temperature}°C
+                    </div>`;
+                }
+
+                icon.addEventListener('click', () => showCityInfo(ville));
+                container.appendChild(icon);
+            });
+        }
+
+        function showCityInfo(ville) {
+            selectedCity = ville;
+            const data = meteoConfig.villes[ville];
+            const periodData = data[currentPeriod];
+            
+            const tempsLabels = {
+                ensoleille: "☀️ Ensoleillé",
+                nuageux: "☁️ Nuageux",
+                eclaircies: "⛅ Éclaircies",
+                pluie: "🌧️ Pluie",
+                orage: "⛈️ Orage",
+                neige: "❄️ Neige"
+            };
+
+            const periodLabel = currentPeriod === "matin" ? "Matin" : "Après-midi";
+            
+            const html = `
+                <div class="selected-city">
+                    <h3>${ville}</h3>
+                    <div class="weather-summary">
+                        ${tempsLabels[periodData.temps]} - ${periodLabel}
+                    </div>
+                    
+                    <div class="param-grid">
+                        <div class="param-box">
+                            <div class="param-label">🌡️ Température</div>
+                            <div class="param-value">${periodData.temperature}°C</div>
+                        </div>
+                        <div class="param-box">
+                            <div class="param-label">💨 Vent</div>
+                            <div class="param-value">${periodData.vent} km/h</div>
+                        </div>
+                    </div>
+                    
+                    <div class="risk-indicator">
+                        <div class="risk-title">⚠️ Risque ${periodData.risque}/4</div>
+                        <div class="risk-bar">
+                            <div class="risk-fill" style="width: ${periodData.risque * 25}%;">
+                                ${periodData.risque}/4
+                            </div>
+                        </div>
+                        <div class="risk-description">
+                            ${risqueDescriptions[periodData.risque]}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('city-info').innerHTML = html;
+        }
+
+        // Démarrer l'application
+        init();
+    </script>
+</body>
+</html>
