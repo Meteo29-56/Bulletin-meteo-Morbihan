@@ -297,7 +297,6 @@
         <div class="main-content">
             <div class="card">
                 <div class="map-container" id="map-container">
-                    <!-- L'image de votre carte sera ici -->
                     <div class="placeholder-text">
                         📍 Ajoutez votre image de carte<br>
                         <small>(Modifiez la configuration dans le code)</small>
@@ -319,28 +318,24 @@
     </div>
 
     <script>
-        // ============================================
-        // CONFIGURATION MÉTÉO
-        // ============================================
         const meteoConfig = {
-            // IMAGE DE LA CARTE
-            // Remplacez par le chemin vers votre image
-            carteImage: "", // Exemple: "carte-bretagne.png"
+            carteImage: "",
             
-            // VILLES ET POSITIONS (en pixels depuis le coin supérieur gauche de l'image)
             villes: {
                 "Lorient": {
-                    x: 200,  // Position X en pixels
-                    y: 300,  // Position Y en pixels
+                    x: 200,
+                    y: 300,
                     matin: {
-                        temps: "ensoleille",      // Options: ensoleille, nuageux, eclaircies, pluie, orage, neige
-                        vent: 25,                 // km/h
-                        temperature: 12,          // °C
-                        risque: 1                 // 1-4
+                        temps: "ensoleille",
+                        vent: 25,
+                        direction: "NO",  // N, S, E, O, NO, NE, SO, SE
+                        temperature: 12,
+                        risque: 1
                     },
                     "apres-midi": {
-                        temps: "eclaircies",
+                        temps: "partiellement-nuageux",
                         vent: 30,
+                        direction: "O",
                         temperature: 15,
                         risque: 2
                     }
@@ -350,14 +345,16 @@
                     x: 400,
                     y: 250,
                     matin: {
-                        temps: "nuageux",
+                        temps: "couvert",
                         vent: 20,
+                        direction: "NE",
                         temperature: 11,
                         risque: 1
                     },
                     "apres-midi": {
-                        temps: "pluie",
+                        temps: "couvert-pluie",
                         vent: 35,
+                        direction: "SO",
                         temperature: 13,
                         risque: 3
                     }
@@ -367,96 +364,71 @@
                     x: 300,
                     y: 150,
                     matin: {
-                        temps: "eclaircies",
+                        temps: "brouillard",
                         vent: 15,
+                        direction: "N",
                         temperature: 10,
                         risque: 1
                     },
                     "apres-midi": {
-                        temps: "ensoleille",
+                        temps: "ensoleille-nuages",
                         vent: 20,
+                        direction: "O",
                         temperature: 14,
                         risque: 1
                     }
                 }
-                
-                // Ajoutez vos autres villes ici avec leurs coordonnées
             }
         };
 
-        // Icônes météo (SVG animés)
-        const weatherIcons = {
-            ensoleille: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="50" cy="50" r="20" fill="#FDB813">
-                    <animate attributeName="r" values="20;22;20" dur="2s" repeatCount="indefinite"/>
-                </circle>
-                <g stroke="#FDB813" stroke-width="3" stroke-linecap="round">
-                    <line x1="50" y1="10" x2="50" y2="20"><animate attributeName="y1" values="10;8;10" dur="2s" repeatCount="indefinite"/></line>
-                    <line x1="50" y1="80" x2="50" y2="90"><animate attributeName="y2" values="90;92;90" dur="2s" repeatCount="indefinite"/></line>
-                    <line x1="10" y1="50" x2="20" y2="50"><animate attributeName="x1" values="10;8;10" dur="2s" repeatCount="indefinite"/></line>
-                    <line x1="80" y1="50" x2="90" y2="50"><animate attributeName="x2" values="90;92;90" dur="2s" repeatCount="indefinite"/></line>
-                    <line x1="20" y1="20" x2="27" y2="27"><animate attributeName="x1" values="20;18;20" dur="2s" repeatCount="indefinite"/></line>
-                    <line x1="73" y1="73" x2="80" y2="80"><animate attributeName="x2" values="80;82;80" dur="2s" repeatCount="indefinite"/></line>
-                    <line x1="73" y1="27" x2="80" y2="20"><animate attributeName="x2" values="80;82;80" dur="2s" repeatCount="indefinite"/></line>
-                    <line x1="20" y1="80" x2="27" y2="73"><animate attributeName="x1" values="20;18;20" dur="2s" repeatCount="indefinite"/></line>
-                </g>
-            </svg>`,
+        function getWeatherIcon(type) {
+            const icons = {
+                "ensoleille": '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="20" fill="#FDB813"><animate attributeName="r" values="20;22;20" dur="2s" repeatCount="indefinite"/></circle><g stroke="#FDB813" stroke-width="3" stroke-linecap="round"><line x1="50" y1="10" x2="50" y2="20"><animate attributeName="y1" values="10;8;10" dur="2s" repeatCount="indefinite"/></line><line x1="50" y1="80" x2="50" y2="90"><animate attributeName="y2" values="90;92;90" dur="2s" repeatCount="indefinite"/></line><line x1="10" y1="50" x2="20" y2="50"><animate attributeName="x1" values="10;8;10" dur="2s" repeatCount="indefinite"/></line><line x1="80" y1="50" x2="90" y2="50"><animate attributeName="x2" values="90;92;90" dur="2s" repeatCount="indefinite"/></line></g></svg>',
+                
+                "ensoleille-nuages": '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><g opacity="0.9"><circle cx="35" cy="35" r="15" fill="#FDB813"><animate attributeName="r" values="15;17;15" dur="2s" repeatCount="indefinite"/></circle></g><path d="M40,60 Q40,50 50,50 Q50,45 55,45 Q60,45 60,50 Q70,50 70,60 Q70,68 63,68 L47,68 Q40,68 40,60" fill="#FFFFFF" stroke="#B8C6DB" stroke-width="2"><animate attributeName="d" values="M40,60 Q40,50 50,50 Q50,45 55,45 Q60,45 60,50 Q70,50 70,60 Q70,68 63,68 L47,68 Q40,68 40,60;M40,62 Q40,52 50,52 Q50,47 55,47 Q60,47 60,52 Q70,52 70,62 Q70,70 63,70 L47,70 Q40,70 40,62;M40,60 Q40,50 50,50 Q50,45 55,45 Q60,45 60,50 Q70,50 70,60 Q70,68 63,68 L47,68 Q40,68 40,60" dur="3s" repeatCount="indefinite"/></path></svg>',
+                
+                "partiellement-nuageux": '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="38" cy="38" r="12" fill="#FDB813" opacity="0.7"><animate attributeName="r" values="12;14;12" dur="2s" repeatCount="indefinite"/></circle><path d="M30,55 Q30,43 42,43 Q42,35 50,35 Q58,35 58,43 Q70,43 70,55 Q70,65 62,65 L38,65 Q30,65 30,55" fill="#E8F1F5" stroke="#B8C6DB" stroke-width="2"><animate attributeName="d" values="M30,55 Q30,43 42,43 Q42,35 50,35 Q58,35 58,43 Q70,43 70,55 Q70,65 62,65 L38,65 Q30,65 30,55;M30,57 Q30,45 42,45 Q42,37 50,37 Q58,37 58,45 Q70,45 70,57 Q70,67 62,67 L38,67 Q30,67 30,57;M30,55 Q30,43 42,43 Q42,35 50,35 Q58,35 58,43 Q70,43 70,55 Q70,65 62,65 L38,65 Q30,65 30,55" dur="3s" repeatCount="indefinite"/></path></svg>',
+                
+                "couvert": '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M20,55 Q20,40 35,40 Q35,30 45,30 Q55,30 55,40 Q70,40 70,55 Q70,65 60,65 L30,65 Q20,65 20,55" fill="#95A5B8" stroke="#7C8C9F" stroke-width="2"><animate attributeName="d" values="M20,55 Q20,40 35,40 Q35,30 45,30 Q55,30 55,40 Q70,40 70,55 Q70,65 60,65 L30,65 Q20,65 20,55;M20,57 Q20,42 35,42 Q35,32 45,32 Q55,32 55,42 Q70,42 70,57 Q70,67 60,67 L30,67 Q20,67 20,57;M20,55 Q20,40 35,40 Q35,30 45,30 Q55,30 55,40 Q70,40 70,55 Q70,65 60,65 L30,65 Q20,65 20,55" dur="4s" repeatCount="indefinite"/></path></svg>',
+                
+                "brouillard": '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><g stroke="#B8C6DB" stroke-width="4" stroke-linecap="round" opacity="0.6"><line x1="20" y1="35" x2="80" y2="35"><animate attributeName="x1" values="20;15;20" dur="3s" repeatCount="indefinite"/></line><line x1="25" y1="45" x2="75" y2="45"><animate attributeName="x1" values="25;20;25" dur="3s" begin="0.5s" repeatCount="indefinite"/></line><line x1="20" y1="55" x2="80" y2="55"><animate attributeName="x1" values="20;15;20" dur="3s" begin="1s" repeatCount="indefinite"/></line><line x1="25" y1="65" x2="75" y2="65"><animate attributeName="x1" values="25;20;25" dur="3s" begin="1.5s" repeatCount="indefinite"/></line></g></svg>',
+                
+                "couvert-pluie": '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M25,45 Q25,30 40,30 Q40,20 50,20 Q60,20 60,30 Q75,30 75,45 Q75,55 65,55 L35,55 Q25,55 25,45" fill="#7C98B3" stroke="#5B7C99" stroke-width="2"/><g stroke="#4A90E2" stroke-width="2.5" stroke-linecap="round"><line x1="30" y1="60" x2="27" y2="70"><animate attributeName="y1" values="60;65;60" dur="0.7s" repeatCount="indefinite"/></line><line x1="50" y1="60" x2="47" y2="70"><animate attributeName="y1" values="60;65;60" dur="0.7s" begin="0.3s" repeatCount="indefinite"/></line><line x1="70" y1="60" x2="67" y2="70"><animate attributeName="y1" values="60;65;60" dur="0.7s" begin="0.6s" repeatCount="indefinite"/></line></g></svg>',
+                
+                "variable-averses": '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="35" cy="30" r="12" fill="#FDB813" opacity="0.7"><animate attributeName="r" values="12;14;12" dur="2s" repeatCount="indefinite"/></circle><path d="M30,50 Q30,38 42,38 Q42,30 50,30 Q58,30 58,38 Q70,38 70,50 Q70,60 62,60 L38,60 Q30,60 30,50" fill="#B8C6DB" stroke="#95A5B8" stroke-width="2"/><g stroke="#4A90E2" stroke-width="2.5" stroke-linecap="round"><line x1="40" y1="65" x2="37" y2="75"><animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/></line><line x1="60" y1="65" x2="57" y2="75"><animate attributeName="opacity" values="0;1;0" dur="2s" begin="1s" repeatCount="indefinite"/></line></g></svg>',
+                
+                "averses-orageuses": '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M25,45 Q25,30 40,30 Q40,20 50,20 Q60,20 60,30 Q75,30 75,45 Q75,55 65,55 L35,55 Q25,55 25,45" fill="#4A5568" stroke="#2D3748" stroke-width="2"/><g stroke="#4A90E2" stroke-width="2.5" stroke-linecap="round"><line x1="35" y1="58" x2="32" y2="68"><animate attributeName="y1" values="58;63;58" dur="0.6s" repeatCount="indefinite"/></line></g><path d="M47,60 L44,68 L49,68 L46,76" stroke="#FDB813" stroke-width="3" fill="none" stroke-linecap="round"><animate attributeName="opacity" values="1;0.2;1" dur="1.2s" repeatCount="indefinite"/></path></svg>',
+                
+                "couvert-neige": '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M25,45 Q25,30 40,30 Q40,20 50,20 Q60,20 60,30 Q75,30 75,45 Q75,55 65,55 L35,55 Q25,55 25,45" fill="#E8F1F5" stroke="#B8C6DB" stroke-width="2"/><g fill="#FFFFFF" stroke="#B8C6DB" stroke-width="1"><circle cx="30" cy="63" r="3"><animate attributeName="cy" values="63;73;63" dur="2s" repeatCount="indefinite"/></circle><circle cx="50" cy="60" r="3"><animate attributeName="cy" values="60;70;60" dur="2s" begin="0.4s" repeatCount="indefinite"/></circle><circle cx="70" cy="62" r="3"><animate attributeName="cy" values="62;72;62" dur="2s" begin="0.8s" repeatCount="indefinite"/></circle></g></svg>',
+                
+                "variable-averses-neige": '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="35" cy="30" r="11" fill="#FDB813" opacity="0.6"><animate attributeName="r" values="11;13;11" dur="2s" repeatCount="indefinite"/></circle><path d="M30,50 Q30,38 42,38 Q42,30 50,30 Q58,30 58,38 Q70,38 70,50 Q70,60 62,60 L38,60 Q30,60 30,50" fill="#E8F1F5" stroke="#B8C6DB" stroke-width="2"/><g fill="#FFFFFF" stroke="#B8C6DB" stroke-width="1"><circle cx="40" cy="65" r="2.5"><animate attributeName="opacity" values="0;1;0" dur="2.5s" repeatCount="indefinite"/></circle><circle cx="60" cy="65" r="2.5"><animate attributeName="opacity" values="0;1;0" dur="2.5s" begin="1.2s" repeatCount="indefinite"/></circle></g></svg>',
+                
+                "variable-pluie-neige": '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="35" cy="30" r="11" fill="#FDB813" opacity="0.6"><animate attributeName="r" values="11;13;11" dur="2s" repeatCount="indefinite"/></circle><path d="M30,50 Q30,38 42,38 Q42,30 50,30 Q58,30 58,38 Q70,38 70,50 Q70,60 62,60 L38,60 Q30,60 30,50" fill="#B8C6DB" stroke="#95A5B8" stroke-width="2"/><g stroke="#4A90E2" stroke-width="2" stroke-linecap="round"><line x1="38" y1="65" x2="35" y2="73"><animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/></line></g><g fill="#FFFFFF" stroke="#B8C6DB" stroke-width="1"><circle cx="55" cy="68" r="2"><animate attributeName="opacity" values="0;1;0" dur="2s" begin="1s" repeatCount="indefinite"/></circle></g></svg>',
+                
+                "couvert-pluie-neige": '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M25,45 Q25,30 40,30 Q40,20 50,20 Q60,20 60,30 Q75,30 75,45 Q75,55 65,55 L35,55 Q25,55 25,45" fill="#8B9DAF" stroke="#6B7D8F" stroke-width="2"/><g stroke="#4A90E2" stroke-width="2.5" stroke-linecap="round"><line x1="32" y1="60" x2="29" y2="70"><animate attributeName="y1" values="60;65;60" dur="0.7s" repeatCount="indefinite"/></line></g><g fill="#FFFFFF" stroke="#B8C6DB" stroke-width="1"><circle cx="50" cy="63" r="2.5"><animate attributeName="cy" values="63;73;63" dur="1.8s" repeatCount="indefinite"/></circle><circle cx="68" cy="63" r="2.5"><animate attributeName="cy" values="63;73;63" dur="1.8s" begin="0.9s" repeatCount="indefinite"/></circle></g></svg>',
+                
+                "couvert-pluie-legere": '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M25,45 Q25,30 40,30 Q40,20 50,20 Q60,20 60,30 Q75,30 75,45 Q75,55 65,55 L35,55 Q25,55 25,45" fill="#A5B8C9" stroke="#8599AA" stroke-width="2"/><g stroke="#6BA3D4" stroke-width="2" stroke-linecap="round" opacity="0.8"><line x1="35" y1="60" x2="33" y2="68"><animate attributeName="y1" values="60;64;60" dur="1.2s" repeatCount="indefinite"/></line><line x1="50" y1="62" x2="48" y2="70"><animate attributeName="y1" values="62;66;62" dur="1.2s" begin="0.4s" repeatCount="indefinite"/></line><line x1="65" y1="60" x2="63" y2="68"><animate attributeName="y1" values="60;64;60" dur="1.2s" begin="0.8s" repeatCount="indefinite"/></line></g></svg>'
+            };
             
-            nuageux: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <path d="M25,60 Q25,45 40,45 Q40,35 50,35 Q60,35 60,45 Q75,45 75,60 Q75,70 65,70 L35,70 Q25,70 25,60" 
-                      fill="#B8C6DB" stroke="#95A5B8" stroke-width="2">
-                    <animate attributeName="d" 
-                             values="M25,60 Q25,45 40,45 Q40,35 50,35 Q60,35 60,45 Q75,45 75,60 Q75,70 65,70 L35,70 Q25,70 25,60;
-                                     M25,62 Q25,47 40,47 Q40,37 50,37 Q60,37 60,47 Q75,47 75,62 Q75,72 65,72 L35,72 Q25,72 25,62;
-                                     M25,60 Q25,45 40,45 Q40,35 50,35 Q60,35 60,45 Q75,45 75,60 Q75,70 65,70 L35,70 Q25,70 25,60"
-                             dur="3s" repeatCount="indefinite"/>
-                </path>
-            </svg>`,
-            
-            eclaircies: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="35" cy="35" r="15" fill="#FDB813" opacity="0.8">
-                    <animate attributeName="r" values="15;17;15" dur="2s" repeatCount="indefinite"/>
-                </circle>
-                <path d="M35,60 Q35,50 45,50 Q45,45 50,45 Q55,45 55,50 Q65,50 65,60 Q65,68 58,68 L42,68 Q35,68 35,60" 
-                      fill="#E8F1F5" stroke="#B8C6DB" stroke-width="2">
-                    <animate attributeName="d" 
-                             values="M35,60 Q35,50 45,50 Q45,45 50,45 Q55,45 55,50 Q65,50 65,60 Q65,68 58,68 L42,68 Q35,68 35,60;
-                                     M35,62 Q35,52 45,52 Q45,47 50,47 Q55,47 55,52 Q65,52 65,62 Q65,70 58,70 L42,70 Q35,70 35,62;
-                                     M35,60 Q35,50 45,50 Q45,45 50,45 Q55,45 55,50 Q65,50 65,60 Q65,68 58,68 L42,68 Q35,68 35,60"
-                             dur="3s" repeatCount="indefinite"/>
-                </path>
-            </svg>`,
-            
-            pluie: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <path d="M25,50 Q25,35 40,35 Q40,25 50,25 Q60,25 60,35 Q75,35 75,50 Q75,60 65,60 L35,60 Q25,60 25,50" 
-                      fill="#7C98B3" stroke="#5B7C99" stroke-width="2"/>
-                <g stroke="#4A90E2" stroke-width="2.5" stroke-linecap="round">
-                    <line x1="35" y1="65" x2="32" y2="75"><animate attributeName="y1" values="65;70;65" dur="0.8s" repeatCount="indefinite"/></line>
-                    <line x1="50" y1="68" x2="47" y2="78"><animate attributeName="y1" values="68;73;68" dur="0.8s" begin="0.2s" repeatCount="indefinite"/></line>
-                    <line x1="65" y1="65" x2="62" y2="75"><animate attributeName="y1" values="65;70;65" dur="0.8s" begin="0.4s" repeatCount="indefinite"/></line>
-                </g>
-            </svg>`,
-            
-            orage: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <path d="M25,50 Q25,35 40,35 Q40,25 50,25 Q60,25 60,35 Q75,35 75,50 Q75,60 65,60 L35,60 Q25,60 25,50" 
-                      fill="#4A5568" stroke="#2D3748" stroke-width="2"/>
-                <path d="M45,62 L42,72 L48,72 L44,82" stroke="#FDB813" stroke-width="3" fill="none" stroke-linecap="round">
-                    <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite"/>
-                </path>
-            </svg>`,
-            
-            neige: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <path d="M25,50 Q25,35 40,35 Q40,25 50,25 Q60,25 60,35 Q75,35 75,50 Q75,60 65,60 L35,60 Q25,60 25,50" 
-                      fill="#E8F1F5" stroke="#B8C6DB" stroke-width="2"/>
-                <g fill="#B8C6DB">
-                    <circle cx="35" cy="68" r="3"><animate attributeName="cy" values="68;78;68" dur="2s" repeatCount="indefinite"/></circle>
-                    <circle cx="50" cy="70" r="3"><animate attributeName="cy" values="70;80;70" dur="2s" begin="0.3s" repeatCount="indefinite"/></circle>
-                    <circle cx="65" cy="68" r="3"><animate attributeName="cy" values="68;78;68" dur="2s" begin="0.6s" repeatCount="indefinite"/></circle>
-                </g>
-            </svg>`
+            return icons[type] || icons["couvert"];
+        }
+
+        const tempsLabels = {
+            "ensoleille": "☀️ Ensoleillé",
+            "ensoleille-nuages": "🌤️ Ensoleillé avec quelques nuages",
+            "partiellement-nuageux": "⛅ Partiellement nuageux",
+            "couvert": "☁️ Couvert",
+            "brouillard": "🌫️ Brouillard",
+            "couvert-pluie": "🌧️ Couvert avec pluie",
+            "variable-averses": "🌦️ Variable avec risque d'averses",
+            "averses-orageuses": "⛈️ Averses orageuses",
+            "couvert-neige": "🌨️ Couvert avec chute de neige",
+            "variable-averses-neige": "🌨️ Variable avec averses de neige",
+            "variable-pluie-neige": "🌨️🌧️ Variable avec averses pluie/neige mêlées",
+            "couvert-pluie-neige": "🌧️❄️ Couvert avec pluie/neige mêlées",
+            "couvert-pluie-legere": "🌦️ Couvert avec pluie légère"
         };
 
-        // Descriptions des risques
         const risqueDescriptions = {
             1: "Risque faible - Conditions météo favorables",
             2: "Risque modéré - Soyez vigilant",
@@ -464,16 +436,32 @@
             4: "Risque très élevé - Restez prudent"
         };
 
-        // ============================================
-        // ÉTAT DE L'APPLICATION
-        // ============================================
+        const directionAngles = {
+            "N": 0,
+            "NE": 45,
+            "E": 90,
+            "SE": 135,
+            "S": 180,
+            "SO": 225,
+            "O": 270,
+            "NO": 315
+        };
+
+        const directionLabels = {
+            "N": "Nord",
+            "NE": "Nord-Est",
+            "E": "Est",
+            "SE": "Sud-Est",
+            "S": "Sud",
+            "SO": "Sud-Ouest",
+            "O": "Ouest",
+            "NO": "Nord-Ouest"
+        };
+
         let currentPeriod = "matin";
         let currentDisplay = "temps";
         let selectedCity = null;
 
-        // ============================================
-        // INITIALISATION
-        // ============================================
         function init() {
             setupControls();
             loadMap();
@@ -481,7 +469,6 @@
         }
 
         function setupControls() {
-            // Boutons période
             document.querySelectorAll('.btn-period').forEach(btn => {
                 btn.addEventListener('click', () => {
                     document.querySelectorAll('.btn-period').forEach(b => b.classList.remove('active'));
@@ -492,7 +479,6 @@
                 });
             });
 
-            // Boutons affichage
             document.querySelectorAll('.btn-display').forEach(btn => {
                 btn.addEventListener('click', () => {
                     document.querySelectorAll('.btn-display').forEach(b => b.classList.remove('active'));
@@ -507,19 +493,15 @@
             const container = document.getElementById('map-container');
             
             if (meteoConfig.carteImage) {
-                container.innerHTML = `<img id="map-image" src="${meteoConfig.carteImage}" alt="Carte Bretagne">`;
-            } else {
-                // Garder le placeholder si pas d'image
+                container.innerHTML = '<img id="map-image" src="' + meteoConfig.carteImage + '" alt="Carte Bretagne">';
             }
         }
 
         function displayWeatherIcons() {
             const container = document.getElementById('map-container');
             
-            // Supprimer les anciennes icônes
             document.querySelectorAll('.weather-icon').forEach(icon => icon.remove());
 
-            // Ajouter les nouvelles icônes
             Object.entries(meteoConfig.villes).forEach(([ville, data]) => {
                 const periodData = data[currentPeriod];
                 const icon = document.createElement('div');
@@ -527,18 +509,14 @@
                 icon.style.left = data.x + 'px';
                 icon.style.top = data.y + 'px';
                 
-                // Choisir l'icône selon le mode d'affichage
                 if (currentDisplay === 'temps') {
-                    icon.innerHTML = weatherIcons[periodData.temps] || weatherIcons.nuageux;
+                    icon.innerHTML = getWeatherIcon(periodData.temps);
                 } else if (currentDisplay === 'vent') {
-                    icon.innerHTML = `<div style="background: linear-gradient(135deg, #4ade80, #10b981); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
-                        ${periodData.vent}<br><span style="font-size: 0.7rem;">km/h</span>
-                    </div>`;
+                    const angle = directionAngles[periodData.direction] || 0;
+                    icon.innerHTML = '<div style="background: linear-gradient(135deg, #4ade80, #10b981); width: 60px; height: 60px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.85rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2); position: relative;"><div style="font-size: 1.2rem; transform: rotate(' + angle + 'deg);">➤</div><div style="font-size: 0.75rem; margin-top: 2px;">' + periodData.vent + ' km/h</div></div>';
                 } else if (currentDisplay === 'temperature') {
                     const tempColor = periodData.temperature < 5 ? '#3b82f6' : periodData.temperature < 15 ? '#10b981' : '#f59e0b';
-                    icon.innerHTML = `<div style="background: ${tempColor}; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
-                        ${periodData.temperature}°C
-                    </div>`;
+                    icon.innerHTML = '<div style="background: ' + tempColor + '; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">' + periodData.temperature + '°C</div>';
                 }
 
                 icon.addEventListener('click', () => showCityInfo(ville));
@@ -551,53 +529,13 @@
             const data = meteoConfig.villes[ville];
             const periodData = data[currentPeriod];
             
-            const tempsLabels = {
-                ensoleille: "☀️ Ensoleillé",
-                nuageux: "☁️ Nuageux",
-                eclaircies: "⛅ Éclaircies",
-                pluie: "🌧️ Pluie",
-                orage: "⛈️ Orage",
-                neige: "❄️ Neige"
-            };
-
             const periodLabel = currentPeriod === "matin" ? "Matin" : "Après-midi";
             
-            const html = `
-                <div class="selected-city">
-                    <h3>${ville}</h3>
-                    <div class="weather-summary">
-                        ${tempsLabels[periodData.temps]} - ${periodLabel}
-                    </div>
-                    
-                    <div class="param-grid">
-                        <div class="param-box">
-                            <div class="param-label">🌡️ Température</div>
-                            <div class="param-value">${periodData.temperature}°C</div>
-                        </div>
-                        <div class="param-box">
-                            <div class="param-label">💨 Vent</div>
-                            <div class="param-value">${periodData.vent} km/h</div>
-                        </div>
-                    </div>
-                    
-                    <div class="risk-indicator">
-                        <div class="risk-title">⚠️ Risque ${periodData.risque}/4</div>
-                        <div class="risk-bar">
-                            <div class="risk-fill" style="width: ${periodData.risque * 25}%;">
-                                ${periodData.risque}/4
-                            </div>
-                        </div>
-                        <div class="risk-description">
-                            ${risqueDescriptions[periodData.risque]}
-                        </div>
-                    </div>
-                </div>
-            `;
+            const html = '<div class="selected-city"><h3>' + ville + '</h3><div class="weather-summary">' + (tempsLabels[periodData.temps] || periodData.temps) + ' - ' + periodLabel + '</div><div class="param-grid"><div class="param-box"><div class="param-label">🌡️ Température</div><div class="param-value">' + periodData.temperature + '°C</div></div><div class="param-box"><div class="param-label">💨 Vent</div><div class="param-value">' + periodData.vent + ' km/h</div><div style="font-size: 0.85rem; margin-top: 5px; opacity: 0.9;">Direction: ' + (directionLabels[periodData.direction] || periodData.direction) + '</div></div></div><div class="risk-indicator"><div class="risk-title">⚠️ Risque ' + periodData.risque + '/4</div><div class="risk-bar"><div class="risk-fill" style="width: ' + (periodData.risque * 25) + '%;">' + periodData.risque + '/4</div></div><div class="risk-description">' + risqueDescriptions[periodData.risque] + '</div></div></div>';
             
             document.getElementById('city-info').innerHTML = html;
         }
 
-        // Démarrer l'application
         init();
     </script>
 </body>
