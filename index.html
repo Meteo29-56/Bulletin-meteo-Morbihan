@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bulletin météo Morbihan</title>
+    <title>Météo Bretagne</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%);
             min-height: 100vh;
             padding: 20px;
         }
@@ -332,6 +332,16 @@
             // Date de dernière mise à jour (sera automatiquement mise à jour)
             dateMiseAJour: new Date().toISOString(),
             
+            // OPTION : Utiliser vos propres icônes
+            // Mettez à true pour utiliser des images au lieu des icônes SVG intégrées
+            utiliserIconesPersonnalisees: false,
+            
+            // Chemin vers le dossier contenant vos icônes (si utiliserIconesPersonnalisees = true)
+            // Nommez vos fichiers exactement comme les codes météo
+            // Exemple: ensoleille.png, couvert-pluie.png, etc.
+            cheminIcones: "icones/",  // Dossier contenant vos images
+            extensionIcones: ".png",  // .png, .jpg, .svg, .gif, etc.
+            
             villes: {
                 "Lorient": {
                     x: 200,
@@ -339,16 +349,34 @@
                     matin: {
                         temps: "ensoleille",
                         vent: 25,
-                        direction: "NO",  // N, S, E, O, NO, NE, SO, SE
+                        direction: "NO",
                         temperature: 12,
-                        risque: 1
+                        temperatureMin: 8,
+                        temperatureMax: 14,
+                        risques: {
+                            vent: 1,
+                            pluie: 0,
+                            neige: 0,
+                            orage: 0,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
                     },
                     "apres-midi": {
                         temps: "partiellement-nuageux",
                         vent: 30,
                         direction: "O",
                         temperature: 15,
-                        risque: 2
+                        temperatureMin: 12,
+                        temperatureMax: 17,
+                        risques: {
+                            vent: 3,
+                            pluie: 2,
+                            neige: 0,
+                            orage: 1,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
                     }
                 },
                 
@@ -360,14 +388,32 @@
                         vent: 20,
                         direction: "NE",
                         temperature: 11,
-                        risque: 1
+                        temperatureMin: 9,
+                        temperatureMax: 13,
+                        risques: {
+                            vent: 0,
+                            pluie: 2,
+                            neige: 1,
+                            orage: 0,
+                            canicule: 0,
+                            grand_froid: 1
+                        }
                     },
                     "apres-midi": {
                         temps: "couvert-pluie",
                         vent: 35,
                         direction: "SO",
                         temperature: 13,
-                        risque: 3
+                        temperatureMin: 11,
+                        temperatureMax: 15,
+                        risques: {
+                            vent: 5,      // Niveau violet exceptionnel !
+                            pluie: 4,
+                            neige: 0,
+                            orage: 3,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
                     }
                 },
                 
@@ -379,14 +425,32 @@
                         vent: 15,
                         direction: "N",
                         temperature: 10,
-                        risque: 1
+                        temperatureMin: 7,
+                        temperatureMax: 11,
+                        risques: {
+                            vent: 0,
+                            pluie: 0,
+                            neige: 0,
+                            orage: 0,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
                     },
                     "apres-midi": {
                         temps: "ensoleille-nuages",
                         vent: 20,
                         direction: "O",
                         temperature: 14,
-                        risque: 1
+                        temperatureMin: 12,
+                        temperatureMax: 16,
+                        risques: {
+                            vent: 2,
+                            pluie: 1,
+                            neige: 0,
+                            orage: 2,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
                     }
                 }
             }
@@ -468,6 +532,47 @@
             "O": "Ouest",
             "NO": "Nord-Ouest"
         };
+
+        const risqueLabels = {
+            vent: "💨 Vent violent",
+            pluie: "🌧️ Pluie-inondation",
+            neige: "❄️ Neige-verglas",
+            orage: "⛈️ Orages",
+            canicule: "🌡️ Canicule",
+            grand_froid: "🥶 Grand froid"
+        };
+
+        const risqueNiveauDescriptions = {
+            1: "Soyez attentif",
+            2: "Soyez très vigilant",
+            3: "Vigilance absolue",
+            4: "Vigilance maximale - Danger",
+            5: "🚨 PHÉNOMÈNE EXCEPTIONNEL - Restez confinés"
+        };
+
+        function getMaxRisque(risques) {
+            let max = 0;
+            let phenomene = null;
+            
+            Object.entries(risques).forEach(([type, niveau]) => {
+                if (niveau > max) {
+                    max = niveau;
+                    phenomene = type;
+                }
+            });
+            
+            return { niveau: max, phenomene: phenomene };
+        }
+
+        function getRisqueColor(niveau) {
+            if (niveau === 0) return '#10b981';
+            if (niveau === 1) return '#10b981';
+            if (niveau === 2) return 'linear-gradient(90deg, #10b981, #fbbf24)';
+            if (niveau === 3) return 'linear-gradient(90deg, #10b981, #fbbf24, #f59e0b)';
+            if (niveau === 4) return 'linear-gradient(90deg, #10b981, #fbbf24, #f59e0b, #ef4444)';
+            if (niveau === 5) return 'linear-gradient(90deg, #10b981, #fbbf24, #f59e0b, #ef4444, #a855f7)';
+            return '#10b981';
+        }
 
         let currentPeriod = "matin";
         let currentDisplay = "temps";
@@ -559,7 +664,13 @@
                 icon.style.top = data.y + 'px';
                 
                 if (currentDisplay === 'temps') {
-                    icon.innerHTML = getWeatherIcon(periodData.temps);
+                    // Utiliser icônes personnalisées ou icônes SVG intégrées
+                    if (meteoConfig.utiliserIconesPersonnalisees) {
+                        const imgSrc = meteoConfig.cheminIcones + periodData.temps + meteoConfig.extensionIcones;
+                        icon.innerHTML = '<img src="' + imgSrc + '" style="width: 100%; height: 100%; object-fit: contain;" alt="' + periodData.temps + '">';
+                    } else {
+                        icon.innerHTML = getWeatherIcon(periodData.temps);
+                    }
                 } else if (currentDisplay === 'vent') {
                     const angle = directionAngles[periodData.direction] || 0;
                     icon.innerHTML = '<div style="background: linear-gradient(135deg, #4ade80, #10b981); width: 60px; height: 60px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.85rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2); position: relative;"><div style="font-size: 1.2rem; transform: rotate(' + angle + 'deg);">➤</div><div style="font-size: 0.75rem; margin-top: 2px;">' + periodData.vent + ' km/h</div></div>';
@@ -580,7 +691,46 @@
             
             const periodLabel = currentPeriod === "matin" ? "Matin" : "Après-midi";
             
-            const html = '<div class="selected-city"><h3>' + ville + '</h3><div class="weather-summary">' + (tempsLabels[periodData.temps] || periodData.temps) + ' - ' + periodLabel + '</div><div class="param-grid"><div class="param-box"><div class="param-label">🌡️ Température</div><div class="param-value">' + periodData.temperature + '°C</div></div><div class="param-box"><div class="param-label">💨 Vent</div><div class="param-value">' + periodData.vent + ' km/h</div><div style="font-size: 0.85rem; margin-top: 5px; opacity: 0.9;">Direction: ' + (directionLabels[periodData.direction] || periodData.direction) + '</div></div></div><div class="risk-indicator"><div class="risk-title">⚠️ Risque ' + periodData.risque + '/4</div><div class="risk-bar"><div class="risk-fill" style="width: ' + (periodData.risque * 25) + '%;">' + periodData.risque + '/4</div></div><div class="risk-description">' + risqueDescriptions[periodData.risque] + '</div></div></div>';
+            // Trouver le risque maximum
+            const maxRisque = getMaxRisque(periodData.risques);
+            
+            // Créer la liste des risques actifs triés par niveau
+            const risquesActifs = [];
+            Object.entries(periodData.risques).forEach(([type, niveau]) => {
+                if (niveau > 0) {
+                    risquesActifs.push({ type, niveau });
+                }
+            });
+            risquesActifs.sort((a, b) => b.niveau - a.niveau);
+            
+            let html = '<div class="selected-city"><h3>' + ville + '</h3><div class="weather-summary">' + (tempsLabels[periodData.temps] || periodData.temps) + ' - ' + periodLabel + '</div>';
+            
+            html += '<div class="param-grid"><div class="param-box"><div class="param-label">🌡️ Température</div><div class="param-value">' + periodData.temperature + '°C</div><div style="font-size: 0.75rem; margin-top: 5px; opacity: 0.85;">Min: ' + periodData.temperatureMin + '°C | Max: ' + periodData.temperatureMax + '°C</div></div><div class="param-box"><div class="param-label">💨 Vent</div><div class="param-value">' + periodData.vent + ' km/h</div><div style="font-size: 0.85rem; margin-top: 5px; opacity: 0.9;">Direction: ' + (directionLabels[periodData.direction] || periodData.direction) + '</div></div></div>';
+            
+            // Afficher le risque principal
+            if (maxRisque.niveau > 0) {
+                const percentageWidth = maxRisque.niveau > 4 ? 100 : (maxRisque.niveau * 25);
+                html += '<div class="risk-indicator"><div class="risk-title">⚠️ Risque principal : ' + risqueLabels[maxRisque.phenomene] + ' (' + maxRisque.niveau + '/5)</div><div class="risk-bar"><div class="risk-fill" style="width: ' + percentageWidth + '%; background: ' + getRisqueColor(maxRisque.niveau) + ';">' + maxRisque.niveau + '/5</div></div><div class="risk-description">' + risqueNiveauDescriptions[maxRisque.niveau] + '</div>';
+                
+                // Afficher les autres risques s'il y en a
+                if (risquesActifs.length > 1) {
+                    html += '<div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.3);"><div style="font-size: 0.9rem; font-weight: 600; margin-bottom: 10px;">Autres phénomènes :</div>';
+                    
+                    risquesActifs.forEach(risque => {
+                        if (risque.type !== maxRisque.phenomene) {
+                            html += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; background: rgba(255,255,255,0.1); padding: 8px 12px; border-radius: 6px;"><span style="font-size: 0.85rem;">' + risqueLabels[risque.type] + '</span><span style="font-weight: 700; font-size: 0.9rem;">' + risque.niveau + '/5</span></div>';
+                        }
+                    });
+                    
+                    html += '</div>';
+                }
+                
+                html += '</div>';
+            } else {
+                html += '<div class="risk-indicator"><div class="risk-title">✅ Pas de risque particulier</div><div class="risk-bar"><div class="risk-fill" style="width: 25%; background: #10b981;">Vert</div></div><div class="risk-description">Conditions météo favorables</div></div>';
+            }
+            
+            html += '</div>';
             
             document.getElementById('city-info').innerHTML = html;
         }
