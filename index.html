@@ -1513,13 +1513,26 @@
             const container = document.getElementById('map-container');
             
             if (meteoConfig.carteImage) {
-                container.innerHTML = '<img id="map-image" src="' + meteoConfig.carteImage + '" alt="Carte Bretagne">';
+                container.innerHTML = '<img id="map-image" src="' + meteoConfig.carteImage + '" alt="Carte Bretagne" style="max-width: 100%; height: auto; display: block;">';
                 
-                // Attendre que l'image soit chargée avant d'afficher les icônes
+                // Attendre que l'image soit complètement chargée
                 const img = document.getElementById('map-image');
-                img.onload = function() {
-                    displayWeatherIcons();
-                };
+                
+                if (img.complete) {
+                    // Image déjà en cache
+                    setTimeout(() => displayWeatherIcons(), 100);
+                } else {
+                    // Attendre le chargement
+                    img.addEventListener('load', function() {
+                        setTimeout(() => displayWeatherIcons(), 100);
+                    });
+                    
+                    // Sécurité en cas d'erreur
+                    img.addEventListener('error', function() {
+                        console.error('Erreur de chargement de l\'image');
+                        displayWeatherIcons();
+                    });
+                }
             }
         }
 
