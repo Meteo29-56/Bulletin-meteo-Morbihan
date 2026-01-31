@@ -266,6 +266,97 @@
             padding: 40px;
         }
 
+        .alert-banner {
+            background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+            animation: slideDown 0.5s ease-out;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .alert-banner.violet {
+            background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.5);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 4px 15px rgba(168, 85, 247, 0.5);
+            }
+            50% {
+                box-shadow: 0 4px 25px rgba(168, 85, 247, 0.8);
+            }
+        }
+
+        .alert-icon {
+            font-size: 2rem;
+            animation: shake 0.5s ease-in-out infinite;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        .alert-content h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .alert-content p {
+            margin: 0;
+            font-size: 0.95rem;
+            opacity: 0.95;
+        }
+
+        .risk-badge {
+            display: inline-block;
+            background: #ef4444;
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 6px;
+            font-weight: 700;
+            animation: blink 1.5s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .risk-badge.orange {
+            background: #f59e0b;
+        }
+
+        .risk-badge.red {
+            background: #ef4444;
+        }
+
+        .risk-badge.violet {
+            background: #a855f7;
+        }
+
         @media (max-width: 968px) {
             .main-content {
                 grid-template-columns: 1fr;
@@ -286,6 +377,8 @@
             <p class="subtitle">Prévisions interactives</p>
             <p class="last-update" id="last-update">Dernière mise à jour : Chargement...</p>
         </header>
+
+        <div id="alert-container"></div>
 
         <div class="controls">
             <div class="control-group">
@@ -542,11 +635,20 @@
             grand_froid: "🥶 Grand froid"
         };
 
+        const risqueToDisplay = {
+            vent: "vent",
+            pluie: "temps",
+            neige: "temps",
+            orage: "temps",
+            canicule: "temperature",
+            grand_froid: "temperature"
+        };
+
         const risqueNiveauDescriptions = {
-            1: "Restez attentif",
-            2: "Soyez vigilant",
-            3: "Soyez très vigilant",
-            4: "Vigilance absolu",
+            1: "Soyez attentif",
+            2: "Soyez très vigilant",
+            3: "Vigilance absolue",
+            4: "Vigilance maximale - Danger",
             5: "🚨 PHÉNOMÈNE EXCEPTIONNEL - Restez confinés"
         };
 
@@ -583,6 +685,93 @@
             loadMap();
             displayWeatherIcons();
             updateLastUpdateTime();
+            checkAndDisplayAlerts();
+        }
+
+        function checkAndDisplayAlerts() {
+            const alertContainer = document.getElementById('alert-container');
+            alertContainer.innerHTML = '';
+            
+            // Vérifier MATIN et APRÈS-MIDI séparément
+            const periodes = ['matin', 'apres-midi'];
+            
+            periodes.forEach(periode => {
+                let maxRisqueGlobal = { niveau: 0, villes: [] };
+                
+                // Parcourir toutes les villes pour cette période
+                Object.entries(meteoConfig.villes).forEach(([ville, data]) => {
+                    const periodData = data[periode];
+                    const maxRisque = getMaxRisque(periodData.risques);
+                    
+                    if (maxRisque.niveau >= 3) {
+                        if (maxRisque.niveau > maxRisqueGlobal.niveau) {
+                            maxRisqueGlobal = {
+                                niveau: maxRisque.niveau,
+                                phenomene: maxRisque.phenomene,
+                                villes: [ville]
+                            };
+                        } else if (maxRisque.niveau === maxRisqueGlobal.niveau) {
+                            maxRisqueGlobal.villes.push(ville);
+                        }
+                    }
+                });
+                
+                // Afficher l'alerte si risque >= 3
+                if (maxRisqueGlobal.niveau >= 3) {
+                    const alertClass = maxRisqueGlobal.niveau >= 5 ? 'violet' : '';
+                    const alertLevel = maxRisqueGlobal.niveau === 3 ? 'ORANGE' : maxRisqueGlobal.niveau === 4 ? 'ROUGE' : 'VIOLET';
+                    const villesText = maxRisqueGlobal.villes.length > 3 
+                        ? maxRisqueGlobal.villes.slice(0, 3).join(', ') + ' et ' + (maxRisqueGlobal.villes.length - 3) + ' autre(s)'
+                        : maxRisqueGlobal.villes.join(', ');
+                    
+                    const periodLabel = periode === 'matin' ? 'Matin' : 'Après-midi';
+                    
+                    const alert = document.createElement('div');
+                    alert.className = 'alert-banner ' + alertClass;
+                    alert.innerHTML = '<div class="alert-icon">⚠️</div><div class="alert-content"><h3>' + periodLabel + ' - Vigilance ' + alertLevel + ' - ' + risqueLabels[maxRisqueGlobal.phenomene] + '</h3><p>Secteurs concernés : ' + villesText + '</p></div>';
+                    
+                    alertContainer.appendChild(alert);
+                }
+            });
+        }
+
+        function updateRiskBadges() {
+            // Supprimer les anciens badges
+            document.querySelectorAll('.risk-badge').forEach(badge => badge.remove());
+            
+            // Calculer les risques pour la période ACTUELLE uniquement
+            let risquesParType = {
+                vent: 0,
+                temps: 0,
+                temperature: 0
+            };
+            
+            // Vérifier seulement la période sélectionnée
+            Object.values(meteoConfig.villes).forEach(data => {
+                const periodData = data[currentPeriod];
+                Object.entries(periodData.risques).forEach(([type, niveau]) => {
+                    if (niveau >= 3) {
+                        const displayType = risqueToDisplay[type];
+                        if (niveau > risquesParType[displayType]) {
+                            risquesParType[displayType] = niveau;
+                        }
+                    }
+                });
+            });
+            
+            // Ajouter les badges sur les boutons
+            document.querySelectorAll('.btn-display').forEach(btn => {
+                const displayType = btn.dataset.display;
+                const risqueNiveau = risquesParType[displayType];
+                
+                if (risqueNiveau >= 3) {
+                    const badge = document.createElement('span');
+                    const badgeClass = risqueNiveau === 3 ? 'orange' : risqueNiveau === 4 ? 'red' : 'violet';
+                    badge.className = 'risk-badge ' + badgeClass;
+                    badge.textContent = '⚠';
+                    btn.appendChild(badge);
+                }
+            });
         }
 
         function updateLastUpdateTime() {
@@ -629,6 +818,7 @@
                     btn.classList.add('active');
                     currentPeriod = btn.dataset.period;
                     displayWeatherIcons();
+                    updateRiskBadges();
                     if (selectedCity) showCityInfo(selectedCity);
                 });
             });
@@ -641,6 +831,8 @@
                     displayWeatherIcons();
                 });
             });
+            
+            updateRiskBadges();
         }
 
         function loadMap() {
