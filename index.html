@@ -386,7 +386,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>🌤️ Météo Bretagne</h1>
+            <h1>🌤️ Bulletin Météo & Risques du Morbihan</h1>
             <p class="subtitle">Prévisions interactives</p>
             <p class="last-update" id="last-update">Dernière mise à jour : Chargement...</p>
         </header>
@@ -435,7 +435,7 @@
 
     <script>
         const meteoConfig = {
-            carteImage: "",
+            carteImage: "Fond-Meteo-Morbihan.png",
             
             // Date de dernière mise à jour (sera automatiquement mise à jour)
             dateMiseAJour: new Date().toISOString(),
@@ -452,8 +452,8 @@
             
             villes: {
                 "Lorient": {
-                    x: 200,
-                    y: 300,
+                    x: 674,
+                    y: 995,
                     matin: {
                         temps: "ensoleille",
                         vent: 25,
@@ -489,8 +489,8 @@
                 },
                 
                 "Vannes": {
-                    x: 400,
-                    y: 250,
+                    x: 1295,
+                    y: 1147,
                     matin: {
                         temps: "couvert",
                         vent: 20,
@@ -526,8 +526,8 @@
                 },
                 
                 "Pontivy": {
-                    x: 300,
-                    y: 150,
+                    x: 1100,
+                    y: 526,
                     matin: {
                         temps: "brouillard",
                         vent: 15,
@@ -560,7 +560,439 @@
                             grand_froid: 0
                         }
                     }
-                }
+                },
+                "Gourin": {
+                    x: 457,
+                    y: 508,
+                    matin: {
+                        temps: "ensoleille",
+                        vent: 25,
+                        direction: "NO",
+                        temperature: 12,
+                        temperatureMin: 8,
+                        temperatureMax: 14,
+                        risques: {
+                            vent: 1,
+                            pluie: 0,
+                            neige: 0,
+                            orage: 0,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
+                    },
+                    "apres-midi": {
+                        temps: "partiellement-nuageux",
+                        vent: 30,
+                        direction: "O",
+                        temperature: 15,
+                        temperatureMin: 12,
+                        temperatureMax: 17,
+                        risques: {
+                            vent: 3,
+                            pluie: 2,
+                            neige: 0,
+                            orage: 1,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
+                    }
+                },
+                "Bubry": {
+                    x: 913,
+                    y: 703,
+                    matin: {
+                        temps: "ensoleille",
+                        vent: 25,
+                        direction: "NO",
+                        temperature: 12,
+                        temperatureMin: 8,
+                        temperatureMax: 14,
+                        risques: {
+                            vent: 1,
+                            pluie: 0,
+                            neige: 0,
+                            orage: 0,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
+                    },
+                    "apres-midi": {
+                        temps: "partiellement-nuageux",
+                        vent: 30,
+                        direction: "O",
+                        temperature: 15,
+                        temperatureMin: 12,
+                        temperatureMax: 17,
+                        risques: {
+                            vent: 3,
+                            pluie: 2,
+                            neige: 0,
+                            orage: 1,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
+                    }
+                },
+                "Quiberon": {
+                    x: 947,
+                    y: 1378,
+                    matin: {
+                        temps: "ensoleille",
+                        vent: 25,
+                        direction: "NO",
+                        temperature: 12,
+                        temperatureMin: 8,
+                        temperatureMax: 14,
+                        risques: {
+                            vent: 1,
+                            pluie: 0,
+                            neige: 0,
+                            orage: 0,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
+                    },
+                    "apres-midi": {
+                        temps: "partiellement-nuageux",
+                        vent: 30,
+                        direction: "O",
+                        temperature: 15,
+                        temperatureMin: 12,
+                        temperatureMax: 17,
+                        risques: {
+                            vent: 3,
+                            pluie: 2,
+                            neige: 0,
+                            orage: 1,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
+                    }
+                },
+                "Belle-Île-en-Mer": {
+                    x: 889,
+                    y: 1620,
+                    matin: {
+                        temps: "ensoleille",
+                        vent: 25,
+                        direction: "NO",
+                        temperature: 12,
+                        temperatureMin: 8,
+                        temperatureMax: 14,
+                        risques: {
+                            vent: 1,
+                            pluie: 0,
+                            neige: 0,
+                            orage: 0,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
+                    },
+                    "apres-midi": {
+                        temps: "partiellement-nuageux",
+                        vent: 30,
+                        direction: "O",
+                        temperature: 15,
+                        temperatureMin: 12,
+                        temperatureMax: 17,
+                        risques: {
+                            vent: 3,
+                            pluie: 2,
+                            neige: 0,
+                            orage: 1,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
+                    }
+                },
+                "La Roche-Bernard": {
+                    x: 1772,
+                    y: 1326,
+                    matin: {
+                        temps: "ensoleille",
+                        vent: 25,
+                        direction: "NO",
+                        temperature: 12,
+                        temperatureMin: 8,
+                        temperatureMax: 14,
+                        risques: {
+                            vent: 1,
+                            pluie: 0,
+                            neige: 0,
+                            orage: 0,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
+                    },
+                    "apres-midi": {
+                        temps: "partiellement-nuageux",
+                        vent: 30,
+                        direction: "O",
+                        temperature: 15,
+                        temperatureMin: 12,
+                        temperatureMax: 17,
+                        risques: {
+                            vent: 3,
+                            pluie: 2,
+                            neige: 0,
+                            orage: 1,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
+                    }
+                },
+                "Rochefort-en-Terre": {
+                    x: 1710,
+                    y: 1064,
+                    matin: {
+                        temps: "ensoleille",
+                        vent: 25,
+                        direction: "NO",
+                        temperature: 12,
+                        temperatureMin: 8,
+                        temperatureMax: 14,
+                        risques: {
+                            vent: 1,
+                            pluie: 0,
+                            neige: 0,
+                            orage: 0,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
+                    },
+                    "apres-midi": {
+                        temps: "partiellement-nuageux",
+                        vent: 30,
+                        direction: "O",
+                        temperature: 15,
+                        temperatureMin: 12,
+                        temperatureMax: 17,
+                        risques: {
+                            vent: 3,
+                            pluie: 2,
+                            neige: 0,
+                            orage: 1,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
+                    }
+                },
+                "Ploërmel": {
+                    x: 1389,
+                    y: 737,
+                    matin: {
+                        temps: "ensoleille",
+                        vent: 25,
+                        direction: "NO",
+                        temperature: 12,
+                        temperatureMin: 8,
+                        temperatureMax: 14,
+                        risques: {
+                            vent: 1,
+                            pluie: 0,
+                            neige: 0,
+                            orage: 0,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
+                    },
+                    "apres-midi": {
+                        temps: "partiellement-nuageux",
+                        vent: 30,
+                        direction: "O",
+                        temperature: 15,
+                        temperatureMin: 12,
+                        temperatureMax: 17,
+                        risques: {
+                            vent: 3,
+                            pluie: 2,
+                            neige: 0,
+                            orage: 1,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
+                    }
+                },
+                "La Gacilly": {
+                    x: 1935,
+                    y: 965,
+                    matin: {
+                        temps: "ensoleille",
+                        vent: 25,
+                        direction: "NO",
+                        temperature: 12,
+                        temperatureMin: 8,
+                        temperatureMax: 14,
+                        risques: {
+                            vent: 1,
+                            pluie: 0,
+                            neige: 0,
+                            orage: 0,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
+                    },
+                    "apres-midi": {
+                        temps: "partiellement-nuageux",
+                        vent: 30,
+                        direction: "O",
+                        temperature: 15,
+                        temperatureMin: 12,
+                        temperatureMax: 17,
+                        risques: {
+                            vent: 3,
+                            pluie: 2,
+                            neige: 0,
+                            orage: 1,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
+                    }
+                },
+                "Locminé": {
+                    x: 1977,
+                    y: 777,
+                    matin: {
+                        temps: "ensoleille",
+                        vent: 25,
+                        direction: "NO",
+                        temperature: 12,
+                        temperatureMin: 8,
+                        temperatureMax: 14,
+                        risques: {
+                            vent: 1,
+                            pluie: 0,
+                            neige: 0,
+                            orage: 0,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
+                    },
+                    "apres-midi": {
+                        temps: "partiellement-nuageux",
+                        vent: 30,
+                        direction: "O",
+                        temperature: 15,
+                        temperatureMin: 12,
+                        temperatureMax: 17,
+                        risques: {
+                            vent: 3,
+                            pluie: 2,
+                            neige: 0,
+                            orage: 1,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
+                    }
+                },
+                "Pluvigner": {
+                    x: 1034,
+                    y: 943,
+                    matin: {
+                        temps: "ensoleille",
+                        vent: 25,
+                        direction: "NO",
+                        temperature: 12,
+                        temperatureMin: 8,
+                        temperatureMax: 14,
+                        risques: {
+                            vent: 1,
+                            pluie: 0,
+                            neige: 0,
+                            orage: 0,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
+                    },
+                    "apres-midi": {
+                        temps: "partiellement-nuageux",
+                        vent: 30,
+                        direction: "O",
+                        temperature: 15,
+                        temperatureMin: 12,
+                        temperatureMax: 17,
+                        risques: {
+                            vent: 3,
+                            pluie: 2,
+                            neige: 0,
+                            orage: 1,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
+                    }
+                },
+                "Guémené-sur-Scorff": {
+                    x: 890,
+                    y: 511,
+                    matin: {
+                        temps: "ensoleille",
+                        vent: 25,
+                        direction: "NO",
+                        temperature: 12,
+                        temperatureMin: 8,
+                        temperatureMax: 14,
+                        risques: {
+                            vent: 1,
+                            pluie: 0,
+                            neige: 0,
+                            orage: 0,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
+                    },
+                    "apres-midi": {
+                        temps: "partiellement-nuageux",
+                        vent: 30,
+                        direction: "O",
+                        temperature: 15,
+                        temperatureMin: 12,
+                        temperatureMax: 17,
+                        risques: {
+                            vent: 3,
+                            pluie: 2,
+                            neige: 0,
+                            orage: 1,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
+                    }
+                },
+                "Le Faoûët": {
+                    x: 611,
+                    y: 598,
+                    matin: {
+                        temps: "ensoleille",
+                        vent: 25,
+                        direction: "NO",
+                        temperature: 12,
+                        temperatureMin: 8,
+                        temperatureMax: 14,
+                        risques: {
+                            vent: 1,
+                            pluie: 0,
+                            neige: 0,
+                            orage: 0,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
+                    },
+                    "apres-midi": {
+                        temps: "partiellement-nuageux",
+                        vent: 30,
+                        direction: "O",
+                        temperature: 15,
+                        temperatureMin: 12,
+                        temperatureMax: 17,
+                        risques: {
+                            vent: 3,
+                            pluie: 2,
+                            neige: 0,
+                            orage: 1,
+                            canicule: 0,
+                            grand_froid: 0
+                        }
+                    }
+                },
             }
         };
 
