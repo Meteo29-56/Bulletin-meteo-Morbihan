@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Météo Morbihan</title>
+    <title>Météo Bretagne</title>
     <style>
         * {
             margin: 0;
@@ -108,11 +108,34 @@
             padding: 12px 24px;
             font-size: 1rem;
             box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+            display: block;
+            margin: 20px auto;
+            width: fit-content;
         }
 
         .btn-export:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            margin-top: 30px;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: opacity 0.3s;
+        }
+
+        footer a:hover {
+            opacity: 0.7;
         }
 
         .main-content {
@@ -386,7 +409,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>🌤️ Bulletin Météo & Risques du Morbihan</h1>
+            <h1>🌤️ Météo Bretagne</h1>
             <p class="subtitle">Prévisions interactives</p>
             <p class="last-update" id="last-update">Dernière mise à jour : Chargement...</p>
         </header>
@@ -406,8 +429,6 @@
                 <button class="btn btn-display" data-display="vent">💨 Vent</button>
                 <button class="btn btn-display" data-display="temperature">🌡️ Température</button>
             </div>
-
-            <button class="btn btn-export" id="export-btn">📸 Exporter la carte</button>
         </div>
 
         <div class="main-content">
@@ -431,11 +452,22 @@
                 </div>
             </div>
         </div>
+
+        <button class="btn btn-export" id="export-btn">📸 Exporter la carte</button>
+
+        <footer>
+            <p>© 2026 <strong>Ciel du Morbihan</strong> - Tous droits réservés</p>
+            <p style="margin-top: 8px; font-size: 0.85rem;">Prévisions météorologiques pour le Morbihan</p>
+        </footer>
     </div>
 
     <script>
         const meteoConfig = {
-            carteImage: "Fond-Meteo-Morbihan.png",
+            carteImage: "Fond-Meteo-Morbihan.png",  // Mettez le nom de votre fichier ici
+            
+            // Dimensions ORIGINALES de votre image source
+            imageLargeurOriginale: 2500,
+            imageHauteurOriginale: 1890,
             
             // Date de dernière mise à jour (sera automatiquement mise à jour)
             dateMiseAJour: new Date().toISOString(),
@@ -452,8 +484,8 @@
             
             villes: {
                 "Lorient": {
-                    x: 270,
-                    y: 398,
+                    x: 674,
+                    y: 995,
                     matin: {
                         temps: "ensoleille",
                         vent: 25,
@@ -489,8 +521,8 @@
                 },
                 
                 "Vannes": {
-                    x: 518,
-                    y: 459,
+                    x: 1295,
+                    y: 1147,
                     matin: {
                         temps: "couvert",
                         vent: 20,
@@ -515,7 +547,7 @@
                         temperatureMin: 11,
                         temperatureMax: 15,
                         risques: {
-                            vent: 3,
+                            vent: 5,
                             pluie: 4,
                             neige: 0,
                             orage: 3,
@@ -526,8 +558,8 @@
                 },
                 
                 "Pontivy": {
-                    x: 440,
-                    y: 210,
+                    x: 1100,
+                    y: 526,
                     matin: {
                         temps: "brouillard",
                         vent: 15,
@@ -561,9 +593,10 @@
                         }
                     }
                 },
+                
                 "Gourin": {
-                    x: 183,
-                    y: 203,
+                    x: 508,
+                    y: 457,
                     matin: {
                         temps: "ensoleille",
                         vent: 25,
@@ -597,9 +630,10 @@
                         }
                     }
                 },
+                
                 "Bubry": {
-                    x: 365,
-                    y: 281,
+                    x: 913,
+                    y: 703,
                     matin: {
                         temps: "ensoleille",
                         vent: 25,
@@ -633,9 +667,10 @@
                         }
                     }
                 },
+                
                 "Quiberon": {
-                    x: 379,
-                    y: 551,
+                    x: 947,
+                    y: 1378,
                     matin: {
                         temps: "ensoleille",
                         vent: 25,
@@ -669,9 +704,10 @@
                         }
                     }
                 },
+                
                 "Belle-Île-en-Mer": {
-                    x: 356,
-                    y: 648,
+                    x: 889,
+                    y: 1620,
                     matin: {
                         temps: "ensoleille",
                         vent: 25,
@@ -705,9 +741,10 @@
                         }
                     }
                 },
+                
                 "La Roche-Bernard": {
-                    x: 709,
-                    y: 530,
+                    x: 1772,
+                    y: 1326,
                     matin: {
                         temps: "ensoleille",
                         vent: 25,
@@ -741,9 +778,10 @@
                         }
                     }
                 },
+                
                 "Rochefort-en-Terre": {
-                    x: 684,
-                    y: 426,
+                    x: 1710,
+                    y: 1064,
                     matin: {
                         temps: "ensoleille",
                         vent: 25,
@@ -777,9 +815,10 @@
                         }
                     }
                 },
+                
                 "Ploërmel": {
-                    x: 556,
-                    y: 295,
+                    x: 1389,
+                    y: 737,
                     matin: {
                         temps: "ensoleille",
                         vent: 25,
@@ -813,9 +852,10 @@
                         }
                     }
                 },
+                
                 "La Gacilly": {
-                    x: 774,
-                    y: 386,
+                    x: 1935,
+                    y: 965,
                     matin: {
                         temps: "ensoleille",
                         vent: 25,
@@ -849,9 +889,10 @@
                         }
                     }
                 },
+                
                 "Locminé": {
-                    x: 791,
-                    y: 311,
+                    x: 1977,
+                    y: 777,
                     matin: {
                         temps: "ensoleille",
                         vent: 25,
@@ -885,9 +926,10 @@
                         }
                     }
                 },
+                
                 "Pluvigner": {
-                    x: 414,
-                    y: 377,
+                    x: 1034,
+                    y: 943,
                     matin: {
                         temps: "ensoleille",
                         vent: 25,
@@ -921,9 +963,10 @@
                         }
                     }
                 },
+                
                 "Guémené-sur-Scorff": {
-                    x: 356,
-                    y: 204,
+                    x: 890,
+                    y: 511,
                     matin: {
                         temps: "ensoleille",
                         vent: 25,
@@ -957,9 +1000,10 @@
                         }
                     }
                 },
+                
                 "Le Faouët": {
-                    x: 244,
-                    y: 239,
+                    x: 611,
+                    y: 598,
                     matin: {
                         temps: "ensoleille",
                         vent: 25,
@@ -992,7 +1036,7 @@
                             grand_froid: 0
                         }
                     }
-                },
+                }
             }
         };
 
@@ -1130,10 +1174,14 @@
         function init() {
             setupControls();
             loadMap();
-            displayWeatherIcons();
             updateLastUpdateTime();
             checkAndDisplayAlerts();
             setupExportButton();
+            
+            // Afficher les icônes seulement si pas d'image de carte
+            if (!meteoConfig.carteImage) {
+                displayWeatherIcons();
+            }
         }
 
         function setupExportButton() {
@@ -1284,22 +1332,25 @@
                     });
                 }
                 
+                // Copyright en bas à droite
+                ctx.fillStyle = '#333';
+                ctx.font = 'bold 16px Arial';
+                ctx.textAlign = 'right';
+                ctx.fillText('© Ciel du Morbihan', canvas.width - 30, canvas.height - 20);
+                
                 // Télécharger l'image
-                canvas.toBlob(blob => {
-                    const url = URL.createObjectURL(blob);
-                    const link = document.createElement('a');
-                    const filename = 'meteo-bretagne-' + currentPeriod + '-' + new Date().toISOString().split('T')[0] + '.png';
-                    link.download = filename;
-                    link.href = url;
-                    link.click();
-                    URL.revokeObjectURL(url);
-                    
-                    btn.textContent = '✅ Exporté !';
-                    setTimeout(() => {
-                        btn.textContent = '📸 Exporter la carte';
-                        btn.disabled = false;
-                    }, 2000);
-                });
+                const dataURL = canvas.toDataURL('image/png');
+                const link = document.createElement('a');
+                const filename = 'meteo-bretagne-' + currentPeriod + '-' + new Date().toISOString().split('T')[0] + '.png';
+                link.download = filename;
+                link.href = dataURL;
+                link.click();
+                
+                btn.textContent = '✅ Exporté !';
+                setTimeout(() => {
+                    btn.textContent = '📸 Exporter la carte';
+                    btn.disabled = false;
+                }, 2000);
                 
             } catch (error) {
                 console.error('Erreur lors de l\'export:', error);
@@ -1463,6 +1514,12 @@
             
             if (meteoConfig.carteImage) {
                 container.innerHTML = '<img id="map-image" src="' + meteoConfig.carteImage + '" alt="Carte Bretagne">';
+                
+                // Attendre que l'image soit chargée avant d'afficher les icônes
+                const img = document.getElementById('map-image');
+                img.onload = function() {
+                    displayWeatherIcons();
+                };
             }
         }
 
