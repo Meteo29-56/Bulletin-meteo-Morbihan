@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Météo Bretagne</title>
+    <title>Météo Morbihan</title>
     <style>
         * {
             margin: 0;
@@ -436,6 +436,8 @@
     <script>
         const meteoConfig = {
             carteImage: "Fond-Meteo-Morbihan.png",
+            imageLargeurOriginale: 2500,  // ← Ajoutez ça
+            imageHauteurOriginale: 1890,  // ← Et ça
             
             // Date de dernière mise à jour (sera automatiquement mise à jour)
             dateMiseAJour: new Date().toISOString(),
@@ -957,7 +959,7 @@
                         }
                     }
                 },
-                "Le Faoûët": {
+                "Le Faouët": {
                     x: 611,
                     y: 598,
                     matin: {
