@@ -15,33 +15,33 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 10px;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
         }
 
         header {
             text-align: center;
             color: white;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         h1 {
-            font-size: 2.5rem;
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
         .subtitle {
-            font-size: 1.1rem;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
             opacity: 0.9;
         }
 
         .last-update {
-            font-size: 0.9rem;
+            font-size: clamp(0.75rem, 2vw, 0.9rem);
             opacity: 0.85;
             margin-top: 8px;
             font-style: italic;
@@ -49,12 +49,12 @@
 
         .controls {
             background: white;
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             display: flex;
-            gap: 20px;
+            gap: 15px;
             flex-wrap: wrap;
             align-items: center;
             justify-content: center;
@@ -62,23 +62,27 @@
 
         .control-group {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .control-group label {
             font-weight: 600;
             color: #333;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
         }
 
         .btn {
-            padding: 10px 20px;
+            padding: 8px 16px;
             border: none;
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 0.95rem;
+            font-size: clamp(0.8rem, 2vw, 0.95rem);
+            white-space: nowrap;
         }
 
         .btn-period {
@@ -105,8 +109,8 @@
         .btn-export {
             background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
             color: white;
-            padding: 12px 24px;
-            font-size: 1rem;
+            padding: 10px 20px;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
             box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
             display: block;
             margin: 20px auto;
@@ -123,7 +127,7 @@
             color: white;
             padding: 20px;
             margin-top: 30px;
-            font-size: 0.9rem;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
             opacity: 0.9;
         }
 
@@ -140,8 +144,15 @@
 
         .main-content {
             display: grid;
-            grid-template-columns: 1fr 350px;
-            gap: 20px;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        @media (min-width: 968px) {
+            .main-content {
+                grid-template-columns: 1fr 350px;
+                gap: 20px;
+            }
         }
 
         .card {
@@ -154,45 +165,48 @@
         .map-container {
             position: relative;
             background: #f0f0f0;
-            min-height: 600px;
+            min-height: 400px;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
 
         #map-image {
-            max-width: 100%;
+            width: 100%;
             height: auto;
             display: block;
         }
 
         .weather-icon {
             position: absolute;
-            width: 60px;
-            height: 60px;
+            width: clamp(40px, 6vw, 60px);
+            height: clamp(40px, 6vw, 60px);
             cursor: pointer;
             transition: all 0.3s;
+            transform: translate(-50%, -50%);
             animation: bounce 2s ease-in-out infinite;
-        }
-
-        .weather-icon:hover {
-            transform: scale(1.2);
             z-index: 10;
         }
 
+        .weather-icon:hover {
+            transform: translate(-50%, -50%) scale(1.2);
+            z-index: 100;
+        }
+
         @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+            50% { transform: translate(-50%, -50%) translateY(-10px); }
         }
 
         .info-panel {
-            padding: 25px;
+            padding: 20px;
             overflow-y: auto;
             max-height: 800px;
         }
 
         .info-panel h2 {
-            font-size: 1.5rem;
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
             margin-bottom: 20px;
             color: #333;
         }
@@ -206,12 +220,12 @@
         }
 
         .selected-city h3 {
-            font-size: 1.5rem;
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
             margin-bottom: 15px;
         }
 
         .weather-summary {
-            font-size: 1.1rem;
+            font-size: clamp(0.95rem, 2.5vw, 1.1rem);
             margin-bottom: 15px;
         }
 
@@ -230,13 +244,13 @@
         }
 
         .param-label {
-            font-size: 0.85rem;
+            font-size: clamp(0.75rem, 2vw, 0.85rem);
             opacity: 0.9;
             margin-bottom: 5px;
         }
 
         .param-value {
-            font-size: 1.3rem;
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
             font-weight: 700;
         }
 
@@ -250,7 +264,7 @@
         .risk-title {
             font-weight: 600;
             margin-bottom: 8px;
-            font-size: 1.1rem;
+            font-size: clamp(0.95rem, 2.5vw, 1.1rem);
         }
 
         .risk-bar {
@@ -270,11 +284,11 @@
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
         }
 
         .risk-description {
-            font-size: 0.9rem;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
             opacity: 0.9;
         }
 
@@ -287,32 +301,34 @@
         .instructions h3 {
             color: #333;
             margin-bottom: 10px;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
         }
 
         .instructions p {
             color: #666;
             line-height: 1.6;
-            font-size: 0.95rem;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
         }
 
         .placeholder-text {
             color: #999;
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
             text-align: center;
-            padding: 40px;
+            padding: 40px 20px;
         }
 
         .alert-banner {
             background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
             color: white;
-            padding: 15px 25px;
+            padding: 15px 20px;
             border-radius: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
             animation: slideDown 0.5s ease-out;
             display: flex;
             align-items: center;
             gap: 15px;
+            flex-wrap: wrap;
         }
 
         .alert-banner.violet {
@@ -342,7 +358,7 @@
         }
 
         .alert-icon {
-            font-size: 2rem;
+            font-size: clamp(1.5rem, 4vw, 2rem);
             animation: shake 0.5s ease-in-out infinite;
         }
 
@@ -354,13 +370,13 @@
 
         .alert-content h3 {
             margin: 0 0 5px 0;
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
             font-weight: 700;
         }
 
         .alert-content p {
             margin: 0;
-            font-size: 0.95rem;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
             opacity: 0.95;
         }
 
@@ -392,18 +408,6 @@
         .risk-badge.violet {
             background: #a855f7;
         }
-
-        @media (max-width: 968px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-            h1 {
-                font-size: 2rem;
-            }
-            .controls {
-                flex-direction: column;
-            }
-        }
     </style>
 </head>
 <body>
@@ -422,7 +426,7 @@
                 <button class="btn btn-period active" data-period="matin">🌅 Matin</button>
                 <button class="btn btn-period" data-period="apres-midi">☀️ Après-midi</button>
             </div>
-            
+
             <div class="control-group">
                 <label>Afficher :</label>
                 <button class="btn btn-display active" data-display="temps">☁️ Temps</button>
@@ -443,7 +447,7 @@
 
             <div class="card info-panel">
                 <h2>📊 Informations</h2>
-                
+
                 <div id="city-info">
                     <div class="instructions">
                         <h3>👆 Cliquez sur une ville</h3>
@@ -463,29 +467,21 @@
 
     <script>
         const meteoConfig = {
-            carteImage: "Fond-Meteo-Morbihan.png",  // Mettez le nom de votre fichier ici
+            carteImage: "Fond-Meteo-Morbihan.png",
             
-            // Dimensions ORIGINALES de votre image source
             imageLargeurOriginale: 2500,
             imageHauteurOriginale: 1890,
             
-            // Date de dernière mise à jour (sera automatiquement mise à jour)
             dateMiseAJour: new Date().toISOString(),
             
-            // OPTION : Utiliser vos propres icônes
-            // Mettez à true pour utiliser des images au lieu des icônes SVG intégrées
             utiliserIconesPersonnalisees: false,
-            
-            // Chemin vers le dossier contenant vos icônes (si utiliserIconesPersonnalisees = true)
-            // Nommez vos fichiers exactement comme les codes météo
-            // Exemple: ensoleille.png, couvert-pluie.png, etc.
-            cheminIcones: "icones/",  // Dossier contenant vos images
-            extensionIcones: ".png",  // .png, .jpg, .svg, .gif, etc.
+            cheminIcones: "icones/",
+            extensionIcones: ".png",
             
             villes: {
                 "Lorient": {
-                    x: 674,
-                    y: 995,
+                    xPercent: 26.96,
+                    yPercent: 52.65,
                     matin: {
                         temps: "ensoleille",
                         vent: 25,
@@ -493,14 +489,7 @@
                         temperature: 12,
                         temperatureMin: 8,
                         temperatureMax: 14,
-                        risques: {
-                            vent: 1,
-                            pluie: 0,
-                            neige: 0,
-                            orage: 0,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 1, pluie: 0, neige: 0, orage: 0, canicule: 0, grand_froid: 0 }
                     },
                     "apres-midi": {
                         temps: "partiellement-nuageux",
@@ -509,20 +498,13 @@
                         temperature: 15,
                         temperatureMin: 12,
                         temperatureMax: 17,
-                        risques: {
-                            vent: 3,
-                            pluie: 2,
-                            neige: 0,
-                            orage: 1,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 3, pluie: 2, neige: 0, orage: 1, canicule: 0, grand_froid: 0 }
                     }
                 },
                 
                 "Vannes": {
-                    x: 1295,
-                    y: 1147,
+                    xPercent: 51.8,
+                    yPercent: 60.69,
                     matin: {
                         temps: "couvert",
                         vent: 20,
@@ -530,14 +512,7 @@
                         temperature: 11,
                         temperatureMin: 9,
                         temperatureMax: 13,
-                        risques: {
-                            vent: 0,
-                            pluie: 2,
-                            neige: 1,
-                            orage: 0,
-                            canicule: 0,
-                            grand_froid: 1
-                        }
+                        risques: { vent: 0, pluie: 2, neige: 1, orage: 0, canicule: 0, grand_froid: 1 }
                     },
                     "apres-midi": {
                         temps: "couvert-pluie",
@@ -546,20 +521,13 @@
                         temperature: 13,
                         temperatureMin: 11,
                         temperatureMax: 15,
-                        risques: {
-                            vent: 5,
-                            pluie: 4,
-                            neige: 0,
-                            orage: 3,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 5, pluie: 4, neige: 0, orage: 3, canicule: 0, grand_froid: 0 }
                     }
                 },
                 
                 "Pontivy": {
-                    x: 1100,
-                    y: 526,
+                    xPercent: 44.0,
+                    yPercent: 27.83,
                     matin: {
                         temps: "brouillard",
                         vent: 15,
@@ -567,14 +535,7 @@
                         temperature: 10,
                         temperatureMin: 7,
                         temperatureMax: 11,
-                        risques: {
-                            vent: 0,
-                            pluie: 0,
-                            neige: 0,
-                            orage: 0,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 0, pluie: 0, neige: 0, orage: 0, canicule: 0, grand_froid: 0 }
                     },
                     "apres-midi": {
                         temps: "ensoleille-nuages",
@@ -583,20 +544,13 @@
                         temperature: 14,
                         temperatureMin: 12,
                         temperatureMax: 16,
-                        risques: {
-                            vent: 2,
-                            pluie: 1,
-                            neige: 0,
-                            orage: 2,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 2, pluie: 1, neige: 0, orage: 2, canicule: 0, grand_froid: 0 }
                     }
                 },
                 
                 "Gourin": {
-                    x: 508,
-                    y: 457,
+                    xPercent: 20.32,
+                    yPercent: 24.18,
                     matin: {
                         temps: "ensoleille",
                         vent: 25,
@@ -604,14 +558,7 @@
                         temperature: 12,
                         temperatureMin: 8,
                         temperatureMax: 14,
-                        risques: {
-                            vent: 1,
-                            pluie: 0,
-                            neige: 0,
-                            orage: 0,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 1, pluie: 0, neige: 0, orage: 0, canicule: 0, grand_froid: 0 }
                     },
                     "apres-midi": {
                         temps: "partiellement-nuageux",
@@ -620,20 +567,13 @@
                         temperature: 15,
                         temperatureMin: 12,
                         temperatureMax: 17,
-                        risques: {
-                            vent: 3,
-                            pluie: 2,
-                            neige: 0,
-                            orage: 1,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 3, pluie: 2, neige: 0, orage: 1, canicule: 0, grand_froid: 0 }
                     }
                 },
                 
                 "Bubry": {
-                    x: 913,
-                    y: 703,
+                    xPercent: 36.52,
+                    yPercent: 37.2,
                     matin: {
                         temps: "ensoleille",
                         vent: 25,
@@ -641,14 +581,7 @@
                         temperature: 12,
                         temperatureMin: 8,
                         temperatureMax: 14,
-                        risques: {
-                            vent: 1,
-                            pluie: 0,
-                            neige: 0,
-                            orage: 0,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 1, pluie: 0, neige: 0, orage: 0, canicule: 0, grand_froid: 0 }
                     },
                     "apres-midi": {
                         temps: "partiellement-nuageux",
@@ -657,20 +590,13 @@
                         temperature: 15,
                         temperatureMin: 12,
                         temperatureMax: 17,
-                        risques: {
-                            vent: 3,
-                            pluie: 2,
-                            neige: 0,
-                            orage: 1,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 3, pluie: 2, neige: 0, orage: 1, canicule: 0, grand_froid: 0 }
                     }
                 },
                 
                 "Quiberon": {
-                    x: 947,
-                    y: 1378,
+                    xPercent: 37.88,
+                    yPercent: 72.91,
                     matin: {
                         temps: "ensoleille",
                         vent: 25,
@@ -678,14 +604,7 @@
                         temperature: 12,
                         temperatureMin: 8,
                         temperatureMax: 14,
-                        risques: {
-                            vent: 1,
-                            pluie: 0,
-                            neige: 0,
-                            orage: 0,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 1, pluie: 0, neige: 0, orage: 0, canicule: 0, grand_froid: 0 }
                     },
                     "apres-midi": {
                         temps: "partiellement-nuageux",
@@ -694,20 +613,13 @@
                         temperature: 15,
                         temperatureMin: 12,
                         temperatureMax: 17,
-                        risques: {
-                            vent: 3,
-                            pluie: 2,
-                            neige: 0,
-                            orage: 1,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 3, pluie: 2, neige: 0, orage: 1, canicule: 0, grand_froid: 0 }
                     }
                 },
                 
                 "Belle-Île-en-Mer": {
-                    x: 889,
-                    y: 1620,
+                    xPercent: 35.56,
+                    yPercent: 85.71,
                     matin: {
                         temps: "ensoleille",
                         vent: 25,
@@ -715,14 +627,7 @@
                         temperature: 12,
                         temperatureMin: 8,
                         temperatureMax: 14,
-                        risques: {
-                            vent: 1,
-                            pluie: 0,
-                            neige: 0,
-                            orage: 0,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 1, pluie: 0, neige: 0, orage: 0, canicule: 0, grand_froid: 0 }
                     },
                     "apres-midi": {
                         temps: "partiellement-nuageux",
@@ -731,20 +636,13 @@
                         temperature: 15,
                         temperatureMin: 12,
                         temperatureMax: 17,
-                        risques: {
-                            vent: 3,
-                            pluie: 2,
-                            neige: 0,
-                            orage: 1,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 3, pluie: 2, neige: 0, orage: 1, canicule: 0, grand_froid: 0 }
                     }
                 },
                 
                 "La Roche-Bernard": {
-                    x: 1772,
-                    y: 1326,
+                    xPercent: 70.88,
+                    yPercent: 70.16,
                     matin: {
                         temps: "ensoleille",
                         vent: 25,
@@ -752,14 +650,7 @@
                         temperature: 12,
                         temperatureMin: 8,
                         temperatureMax: 14,
-                        risques: {
-                            vent: 1,
-                            pluie: 0,
-                            neige: 0,
-                            orage: 0,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 1, pluie: 0, neige: 0, orage: 0, canicule: 0, grand_froid: 0 }
                     },
                     "apres-midi": {
                         temps: "partiellement-nuageux",
@@ -768,20 +659,13 @@
                         temperature: 15,
                         temperatureMin: 12,
                         temperatureMax: 17,
-                        risques: {
-                            vent: 3,
-                            pluie: 2,
-                            neige: 0,
-                            orage: 1,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 3, pluie: 2, neige: 0, orage: 1, canicule: 0, grand_froid: 0 }
                     }
                 },
                 
                 "Rochefort-en-Terre": {
-                    x: 1710,
-                    y: 1064,
+                    xPercent: 68.4,
+                    yPercent: 56.3,
                     matin: {
                         temps: "ensoleille",
                         vent: 25,
@@ -789,14 +673,7 @@
                         temperature: 12,
                         temperatureMin: 8,
                         temperatureMax: 14,
-                        risques: {
-                            vent: 1,
-                            pluie: 0,
-                            neige: 0,
-                            orage: 0,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 1, pluie: 0, neige: 0, orage: 0, canicule: 0, grand_froid: 0 }
                     },
                     "apres-midi": {
                         temps: "partiellement-nuageux",
@@ -805,20 +682,13 @@
                         temperature: 15,
                         temperatureMin: 12,
                         temperatureMax: 17,
-                        risques: {
-                            vent: 3,
-                            pluie: 2,
-                            neige: 0,
-                            orage: 1,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 3, pluie: 2, neige: 0, orage: 1, canicule: 0, grand_froid: 0 }
                     }
                 },
                 
                 "Ploërmel": {
-                    x: 1389,
-                    y: 737,
+                    xPercent: 55.56,
+                    yPercent: 39.0,
                     matin: {
                         temps: "ensoleille",
                         vent: 25,
@@ -826,14 +696,7 @@
                         temperature: 12,
                         temperatureMin: 8,
                         temperatureMax: 14,
-                        risques: {
-                            vent: 1,
-                            pluie: 0,
-                            neige: 0,
-                            orage: 0,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 1, pluie: 0, neige: 0, orage: 0, canicule: 0, grand_froid: 0 }
                     },
                     "apres-midi": {
                         temps: "partiellement-nuageux",
@@ -842,20 +705,13 @@
                         temperature: 15,
                         temperatureMin: 12,
                         temperatureMax: 17,
-                        risques: {
-                            vent: 3,
-                            pluie: 2,
-                            neige: 0,
-                            orage: 1,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 3, pluie: 2, neige: 0, orage: 1, canicule: 0, grand_froid: 0 }
                     }
                 },
                 
                 "La Gacilly": {
-                    x: 1935,
-                    y: 965,
+                    xPercent: 77.4,
+                    yPercent: 51.06,
                     matin: {
                         temps: "ensoleille",
                         vent: 25,
@@ -863,14 +719,7 @@
                         temperature: 12,
                         temperatureMin: 8,
                         temperatureMax: 14,
-                        risques: {
-                            vent: 1,
-                            pluie: 0,
-                            neige: 0,
-                            orage: 0,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 1, pluie: 0, neige: 0, orage: 0, canicule: 0, grand_froid: 0 }
                     },
                     "apres-midi": {
                         temps: "partiellement-nuageux",
@@ -879,20 +728,13 @@
                         temperature: 15,
                         temperatureMin: 12,
                         temperatureMax: 17,
-                        risques: {
-                            vent: 3,
-                            pluie: 2,
-                            neige: 0,
-                            orage: 1,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 3, pluie: 2, neige: 0, orage: 1, canicule: 0, grand_froid: 0 }
                     }
                 },
                 
                 "Locminé": {
-                    x: 1977,
-                    y: 777,
+                    xPercent: 79.08,
+                    yPercent: 41.11,
                     matin: {
                         temps: "ensoleille",
                         vent: 25,
@@ -900,14 +742,7 @@
                         temperature: 12,
                         temperatureMin: 8,
                         temperatureMax: 14,
-                        risques: {
-                            vent: 1,
-                            pluie: 0,
-                            neige: 0,
-                            orage: 0,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 1, pluie: 0, neige: 0, orage: 0, canicule: 0, grand_froid: 0 }
                     },
                     "apres-midi": {
                         temps: "partiellement-nuageux",
@@ -916,20 +751,13 @@
                         temperature: 15,
                         temperatureMin: 12,
                         temperatureMax: 17,
-                        risques: {
-                            vent: 3,
-                            pluie: 2,
-                            neige: 0,
-                            orage: 1,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 3, pluie: 2, neige: 0, orage: 1, canicule: 0, grand_froid: 0 }
                     }
                 },
                 
                 "Pluvigner": {
-                    x: 1034,
-                    y: 943,
+                    xPercent: 41.36,
+                    yPercent: 49.89,
                     matin: {
                         temps: "ensoleille",
                         vent: 25,
@@ -937,14 +765,7 @@
                         temperature: 12,
                         temperatureMin: 8,
                         temperatureMax: 14,
-                        risques: {
-                            vent: 1,
-                            pluie: 0,
-                            neige: 0,
-                            orage: 0,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 1, pluie: 0, neige: 0, orage: 0, canicule: 0, grand_froid: 0 }
                     },
                     "apres-midi": {
                         temps: "partiellement-nuageux",
@@ -953,20 +774,13 @@
                         temperature: 15,
                         temperatureMin: 12,
                         temperatureMax: 17,
-                        risques: {
-                            vent: 3,
-                            pluie: 2,
-                            neige: 0,
-                            orage: 1,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 3, pluie: 2, neige: 0, orage: 1, canicule: 0, grand_froid: 0 }
                     }
                 },
                 
                 "Guémené-sur-Scorff": {
-                    x: 890,
-                    y: 511,
+                    xPercent: 35.6,
+                    yPercent: 27.04,
                     matin: {
                         temps: "ensoleille",
                         vent: 25,
@@ -974,14 +788,7 @@
                         temperature: 12,
                         temperatureMin: 8,
                         temperatureMax: 14,
-                        risques: {
-                            vent: 1,
-                            pluie: 0,
-                            neige: 0,
-                            orage: 0,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 1, pluie: 0, neige: 0, orage: 0, canicule: 0, grand_froid: 0 }
                     },
                     "apres-midi": {
                         temps: "partiellement-nuageux",
@@ -990,20 +797,13 @@
                         temperature: 15,
                         temperatureMin: 12,
                         temperatureMax: 17,
-                        risques: {
-                            vent: 3,
-                            pluie: 2,
-                            neige: 0,
-                            orage: 1,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 3, pluie: 2, neige: 0, orage: 1, canicule: 0, grand_froid: 0 }
                     }
                 },
                 
                 "Le Faouët": {
-                    x: 611,
-                    y: 598,
+                    xPercent: 24.44,
+                    yPercent: 31.64,
                     matin: {
                         temps: "ensoleille",
                         vent: 25,
@@ -1011,14 +811,7 @@
                         temperature: 12,
                         temperatureMin: 8,
                         temperatureMax: 14,
-                        risques: {
-                            vent: 1,
-                            pluie: 0,
-                            neige: 0,
-                            orage: 0,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 1, pluie: 0, neige: 0, orage: 0, canicule: 0, grand_froid: 0 }
                     },
                     "apres-midi": {
                         temps: "partiellement-nuageux",
@@ -1027,14 +820,7 @@
                         temperature: 15,
                         temperatureMin: 12,
                         temperatureMax: 17,
-                        risques: {
-                            vent: 3,
-                            pluie: 2,
-                            neige: 0,
-                            orage: 1,
-                            canicule: 0,
-                            grand_froid: 0
-                        }
+                        risques: { vent: 3, pluie: 2, neige: 0, orage: 1, canicule: 0, grand_froid: 0 }
                     }
                 }
             }
@@ -1043,32 +829,19 @@
         function getWeatherIcon(type) {
             const icons = {
                 "ensoleille": '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="20" fill="#FDB813"><animate attributeName="r" values="20;22;20" dur="2s" repeatCount="indefinite"/></circle><g stroke="#FDB813" stroke-width="3" stroke-linecap="round"><line x1="50" y1="10" x2="50" y2="20"><animate attributeName="y1" values="10;8;10" dur="2s" repeatCount="indefinite"/></line><line x1="50" y1="80" x2="50" y2="90"><animate attributeName="y2" values="90;92;90" dur="2s" repeatCount="indefinite"/></line><line x1="10" y1="50" x2="20" y2="50"><animate attributeName="x1" values="10;8;10" dur="2s" repeatCount="indefinite"/></line><line x1="80" y1="50" x2="90" y2="50"><animate attributeName="x2" values="90;92;90" dur="2s" repeatCount="indefinite"/></line></g></svg>',
-                
                 "ensoleille-nuages": '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><g opacity="0.9"><circle cx="35" cy="35" r="15" fill="#FDB813"><animate attributeName="r" values="15;17;15" dur="2s" repeatCount="indefinite"/></circle></g><path d="M40,60 Q40,50 50,50 Q50,45 55,45 Q60,45 60,50 Q70,50 70,60 Q70,68 63,68 L47,68 Q40,68 40,60" fill="#FFFFFF" stroke="#B8C6DB" stroke-width="2"><animate attributeName="d" values="M40,60 Q40,50 50,50 Q50,45 55,45 Q60,45 60,50 Q70,50 70,60 Q70,68 63,68 L47,68 Q40,68 40,60;M40,62 Q40,52 50,52 Q50,47 55,47 Q60,47 60,52 Q70,52 70,62 Q70,70 63,70 L47,70 Q40,70 40,62;M40,60 Q40,50 50,50 Q50,45 55,45 Q60,45 60,50 Q70,50 70,60 Q70,68 63,68 L47,68 Q40,68 40,60" dur="3s" repeatCount="indefinite"/></path></svg>',
-                
                 "partiellement-nuageux": '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="38" cy="38" r="12" fill="#FDB813" opacity="0.7"><animate attributeName="r" values="12;14;12" dur="2s" repeatCount="indefinite"/></circle><path d="M30,55 Q30,43 42,43 Q42,35 50,35 Q58,35 58,43 Q70,43 70,55 Q70,65 62,65 L38,65 Q30,65 30,55" fill="#E8F1F5" stroke="#B8C6DB" stroke-width="2"><animate attributeName="d" values="M30,55 Q30,43 42,43 Q42,35 50,35 Q58,35 58,43 Q70,43 70,55 Q70,65 62,65 L38,65 Q30,65 30,55;M30,57 Q30,45 42,45 Q42,37 50,37 Q58,37 58,45 Q70,45 70,57 Q70,67 62,67 L38,67 Q30,67 30,57;M30,55 Q30,43 42,43 Q42,35 50,35 Q58,35 58,43 Q70,43 70,55 Q70,65 62,65 L38,65 Q30,65 30,55" dur="3s" repeatCount="indefinite"/></path></svg>',
-                
                 "couvert": '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M20,55 Q20,40 35,40 Q35,30 45,30 Q55,30 55,40 Q70,40 70,55 Q70,65 60,65 L30,65 Q20,65 20,55" fill="#95A5B8" stroke="#7C8C9F" stroke-width="2"><animate attributeName="d" values="M20,55 Q20,40 35,40 Q35,30 45,30 Q55,30 55,40 Q70,40 70,55 Q70,65 60,65 L30,65 Q20,65 20,55;M20,57 Q20,42 35,42 Q35,32 45,32 Q55,32 55,42 Q70,42 70,57 Q70,67 60,67 L30,67 Q20,67 20,57;M20,55 Q20,40 35,40 Q35,30 45,30 Q55,30 55,40 Q70,40 70,55 Q70,65 60,65 L30,65 Q20,65 20,55" dur="4s" repeatCount="indefinite"/></path></svg>',
-                
                 "brouillard": '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><g stroke="#B8C6DB" stroke-width="4" stroke-linecap="round" opacity="0.6"><line x1="20" y1="35" x2="80" y2="35"><animate attributeName="x1" values="20;15;20" dur="3s" repeatCount="indefinite"/></line><line x1="25" y1="45" x2="75" y2="45"><animate attributeName="x1" values="25;20;25" dur="3s" begin="0.5s" repeatCount="indefinite"/></line><line x1="20" y1="55" x2="80" y2="55"><animate attributeName="x1" values="20;15;20" dur="3s" begin="1s" repeatCount="indefinite"/></line><line x1="25" y1="65" x2="75" y2="65"><animate attributeName="x1" values="25;20;25" dur="3s" begin="1.5s" repeatCount="indefinite"/></line></g></svg>',
-                
                 "couvert-pluie": '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M25,45 Q25,30 40,30 Q40,20 50,20 Q60,20 60,30 Q75,30 75,45 Q75,55 65,55 L35,55 Q25,55 25,45" fill="#7C98B3" stroke="#5B7C99" stroke-width="2"/><g stroke="#4A90E2" stroke-width="2.5" stroke-linecap="round"><line x1="30" y1="60" x2="27" y2="70"><animate attributeName="y1" values="60;65;60" dur="0.7s" repeatCount="indefinite"/></line><line x1="50" y1="60" x2="47" y2="70"><animate attributeName="y1" values="60;65;60" dur="0.7s" begin="0.3s" repeatCount="indefinite"/></line><line x1="70" y1="60" x2="67" y2="70"><animate attributeName="y1" values="60;65;60" dur="0.7s" begin="0.6s" repeatCount="indefinite"/></line></g></svg>',
-                
                 "variable-averses": '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="35" cy="30" r="12" fill="#FDB813" opacity="0.7"><animate attributeName="r" values="12;14;12" dur="2s" repeatCount="indefinite"/></circle><path d="M30,50 Q30,38 42,38 Q42,30 50,30 Q58,30 58,38 Q70,38 70,50 Q70,60 62,60 L38,60 Q30,60 30,50" fill="#B8C6DB" stroke="#95A5B8" stroke-width="2"/><g stroke="#4A90E2" stroke-width="2.5" stroke-linecap="round"><line x1="40" y1="65" x2="37" y2="75"><animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/></line><line x1="60" y1="65" x2="57" y2="75"><animate attributeName="opacity" values="0;1;0" dur="2s" begin="1s" repeatCount="indefinite"/></line></g></svg>',
-                
                 "averses-orageuses": '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M25,45 Q25,30 40,30 Q40,20 50,20 Q60,20 60,30 Q75,30 75,45 Q75,55 65,55 L35,55 Q25,55 25,45" fill="#4A5568" stroke="#2D3748" stroke-width="2"/><g stroke="#4A90E2" stroke-width="2.5" stroke-linecap="round"><line x1="35" y1="58" x2="32" y2="68"><animate attributeName="y1" values="58;63;58" dur="0.6s" repeatCount="indefinite"/></line></g><path d="M47,60 L44,68 L49,68 L46,76" stroke="#FDB813" stroke-width="3" fill="none" stroke-linecap="round"><animate attributeName="opacity" values="1;0.2;1" dur="1.2s" repeatCount="indefinite"/></path></svg>',
-                
                 "couvert-neige": '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M25,45 Q25,30 40,30 Q40,20 50,20 Q60,20 60,30 Q75,30 75,45 Q75,55 65,55 L35,55 Q25,55 25,45" fill="#E8F1F5" stroke="#B8C6DB" stroke-width="2"/><g fill="#FFFFFF" stroke="#B8C6DB" stroke-width="1"><circle cx="30" cy="63" r="3"><animate attributeName="cy" values="63;73;63" dur="2s" repeatCount="indefinite"/></circle><circle cx="50" cy="60" r="3"><animate attributeName="cy" values="60;70;60" dur="2s" begin="0.4s" repeatCount="indefinite"/></circle><circle cx="70" cy="62" r="3"><animate attributeName="cy" values="62;72;62" dur="2s" begin="0.8s" repeatCount="indefinite"/></circle></g></svg>',
-                
                 "variable-averses-neige": '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="35" cy="30" r="11" fill="#FDB813" opacity="0.6"><animate attributeName="r" values="11;13;11" dur="2s" repeatCount="indefinite"/></circle><path d="M30,50 Q30,38 42,38 Q42,30 50,30 Q58,30 58,38 Q70,38 70,50 Q70,60 62,60 L38,60 Q30,60 30,50" fill="#E8F1F5" stroke="#B8C6DB" stroke-width="2"/><g fill="#FFFFFF" stroke="#B8C6DB" stroke-width="1"><circle cx="40" cy="65" r="2.5"><animate attributeName="opacity" values="0;1;0" dur="2.5s" repeatCount="indefinite"/></circle><circle cx="60" cy="65" r="2.5"><animate attributeName="opacity" values="0;1;0" dur="2.5s" begin="1.2s" repeatCount="indefinite"/></circle></g></svg>',
-                
                 "variable-pluie-neige": '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="35" cy="30" r="11" fill="#FDB813" opacity="0.6"><animate attributeName="r" values="11;13;11" dur="2s" repeatCount="indefinite"/></circle><path d="M30,50 Q30,38 42,38 Q42,30 50,30 Q58,30 58,38 Q70,38 70,50 Q70,60 62,60 L38,60 Q30,60 30,50" fill="#B8C6DB" stroke="#95A5B8" stroke-width="2"/><g stroke="#4A90E2" stroke-width="2" stroke-linecap="round"><line x1="38" y1="65" x2="35" y2="73"><animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/></line></g><g fill="#FFFFFF" stroke="#B8C6DB" stroke-width="1"><circle cx="55" cy="68" r="2"><animate attributeName="opacity" values="0;1;0" dur="2s" begin="1s" repeatCount="indefinite"/></circle></g></svg>',
-                
                 "couvert-pluie-neige": '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M25,45 Q25,30 40,30 Q40,20 50,20 Q60,20 60,30 Q75,30 75,45 Q75,55 65,55 L35,55 Q25,55 25,45" fill="#8B9DAF" stroke="#6B7D8F" stroke-width="2"/><g stroke="#4A90E2" stroke-width="2.5" stroke-linecap="round"><line x1="32" y1="60" x2="29" y2="70"><animate attributeName="y1" values="60;65;60" dur="0.7s" repeatCount="indefinite"/></line></g><g fill="#FFFFFF" stroke="#B8C6DB" stroke-width="1"><circle cx="50" cy="63" r="2.5"><animate attributeName="cy" values="63;73;63" dur="1.8s" repeatCount="indefinite"/></circle><circle cx="68" cy="63" r="2.5"><animate attributeName="cy" values="63;73;63" dur="1.8s" begin="0.9s" repeatCount="indefinite"/></circle></g></svg>',
-                
                 "couvert-pluie-legere": '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M25,45 Q25,30 40,30 Q40,20 50,20 Q60,20 60,30 Q75,30 75,45 Q75,55 65,55 L35,55 Q25,55 25,45" fill="#A5B8C9" stroke="#8599AA" stroke-width="2"/><g stroke="#6BA3D4" stroke-width="2" stroke-linecap="round" opacity="0.8"><line x1="35" y1="60" x2="33" y2="68"><animate attributeName="y1" values="60;64;60" dur="1.2s" repeatCount="indefinite"/></line><line x1="50" y1="62" x2="48" y2="70"><animate attributeName="y1" values="62;66;62" dur="1.2s" begin="0.4s" repeatCount="indefinite"/></line><line x1="65" y1="60" x2="63" y2="68"><animate attributeName="y1" values="60;64;60" dur="1.2s" begin="0.8s" repeatCount="indefinite"/></line></g></svg>'
             };
-            
             return icons[type] || icons["couvert"];
         }
 
@@ -1088,33 +861,14 @@
             "couvert-pluie-legere": "🌦️ Couvert avec pluie légère"
         };
 
-        const risqueDescriptions = {
-            1: "Risque faible - Conditions météo favorables",
-            2: "Risque modéré - Soyez vigilant",
-            3: "Risque élevé - Conditions difficiles attendues",
-            4: "Risque très élevé - Restez prudent"
-        };
-
         const directionAngles = {
-            "N": 0,
-            "NE": 45,
-            "E": 90,
-            "SE": 135,
-            "S": 180,
-            "SO": 225,
-            "O": 270,
-            "NO": 315
+            "N": 0, "NE": 45, "E": 90, "SE": 135,
+            "S": 180, "SO": 225, "O": 270, "NO": 315
         };
 
         const directionLabels = {
-            "N": "Nord",
-            "NE": "Nord-Est",
-            "E": "Est",
-            "SE": "Sud-Est",
-            "S": "Sud",
-            "SO": "Sud-Ouest",
-            "O": "Ouest",
-            "NO": "Nord-Ouest"
+            "N": "Nord", "NE": "Nord-Est", "E": "Est", "SE": "Sud-Est",
+            "S": "Sud", "SO": "Sud-Ouest", "O": "Ouest", "NO": "Nord-Ouest"
         };
 
         const risqueLabels = {
@@ -1127,12 +881,8 @@
         };
 
         const risqueToDisplay = {
-            vent: "vent",
-            pluie: "temps",
-            neige: "temps",
-            orage: "temps",
-            canicule: "temperature",
-            grand_froid: "temperature"
+            vent: "vent", pluie: "temps", neige: "temps",
+            orage: "temps", canicule: "temperature", grand_froid: "temperature"
         };
 
         const risqueNiveauDescriptions = {
@@ -1146,20 +896,17 @@
         function getMaxRisque(risques) {
             let max = 0;
             let phenomene = null;
-            
             Object.entries(risques).forEach(([type, niveau]) => {
                 if (niveau > max) {
                     max = niveau;
                     phenomene = type;
                 }
             });
-            
             return { niveau: max, phenomene: phenomene };
         }
 
         function getRisqueColor(niveau) {
-            if (niveau === 0) return '#10b981';
-            if (niveau === 1) return '#10b981';
+            if (niveau === 0 || niveau === 1) return '#10b981';
             if (niveau === 2) return 'linear-gradient(90deg, #10b981, #fbbf24)';
             if (niveau === 3) return 'linear-gradient(90deg, #10b981, #fbbf24, #f59e0b)';
             if (niveau === 4) return 'linear-gradient(90deg, #10b981, #fbbf24, #f59e0b, #ef4444)';
@@ -1177,11 +924,7 @@
             updateLastUpdateTime();
             checkAndDisplayAlerts();
             setupExportButton();
-            
-            // Afficher les icônes seulement si pas d'image de carte
-            if (!meteoConfig.carteImage) {
-                displayWeatherIcons();
-            }
+            if (!meteoConfig.carteImage) displayWeatherIcons();
         }
 
         function setupExportButton() {
@@ -1194,47 +937,33 @@
             btn.disabled = true;
 
             try {
-                // Créer un canvas
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
-                
-                // Dimensions
                 canvas.width = 1200;
                 canvas.height = 800;
-                
-                // Fond
+
                 ctx.fillStyle = '#ffffff';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-                
-                // Titre
+
                 ctx.fillStyle = '#1e3a8a';
                 ctx.font = 'bold 36px Arial';
                 ctx.textAlign = 'center';
                 ctx.fillText('Météo Bretagne - ' + (currentPeriod === 'matin' ? 'Matin' : 'Après-midi'), canvas.width / 2, 50);
-                
-                // Date
+
                 ctx.font = '18px Arial';
                 ctx.fillStyle = '#666';
                 const date = new Date(meteoConfig.dateMiseAJour);
                 ctx.fillText('Mise à jour : ' + date.toLocaleDateString('fr-FR'), canvas.width / 2, 80);
-                
-                // Mode affiché
+
                 const modeLabels = { temps: 'Temps', vent: 'Vent', temperature: 'Température' };
                 ctx.fillText('Affichage : ' + modeLabels[currentDisplay], canvas.width / 2, 105);
-                
-                // Zone de carte
+
                 const mapStartY = 140;
                 ctx.strokeStyle = '#ccc';
                 ctx.lineWidth = 2;
                 ctx.strokeRect(50, mapStartY, canvas.width - 100, 450);
-                
-                // Texte si pas d'image de carte
-                if (!meteoConfig.carteImage) {
-                    ctx.fillStyle = '#999';
-                    ctx.font = '24px Arial';
-                    ctx.fillText('Carte du Morbihan', canvas.width / 2, mapStartY + 225);
-                } else {
-                    // Charger et dessiner l'image de la carte si elle existe
+
+                if (meteoConfig.carteImage) {
                     const img = new Image();
                     img.crossOrigin = 'anonymous';
                     await new Promise((resolve, reject) => {
@@ -1246,114 +975,26 @@
                         img.src = meteoConfig.carteImage;
                     });
                 }
-                
-                // Dessiner les icônes météo
-                let iconY = mapStartY + 50;
-                let iconX = 100;
-                let count = 0;
-                
-                for (const [ville, data] of Object.entries(meteoConfig.villes)) {
-                    const periodData = data[currentPeriod];
-                    
-                    // Position sur le canvas
-                    const x = iconX + (count % 4) * 250;
-                    const y = iconY + Math.floor(count / 4) * 100;
-                    
-                    // Nom de la ville
-                    ctx.fillStyle = '#333';
-                    ctx.font = 'bold 16px Arial';
-                    ctx.textAlign = 'left';
-                    ctx.fillText(ville, x, y);
-                    
-                    // Info selon le mode
-                    ctx.font = '14px Arial';
-                    if (currentDisplay === 'temps') {
-                        ctx.fillText(tempsLabels[periodData.temps] || periodData.temps, x, y + 20);
-                    } else if (currentDisplay === 'vent') {
-                        ctx.fillText(periodData.vent + ' km/h ' + (directionLabels[periodData.direction] || ''), x, y + 20);
-                    } else if (currentDisplay === 'temperature') {
-                        ctx.fillText(periodData.temperature + '°C', x, y + 20);
-                        ctx.font = '12px Arial';
-                        ctx.fillStyle = '#666';
-                        ctx.fillText('Min: ' + periodData.temperatureMin + '°C Max: ' + periodData.temperatureMax + '°C', x, y + 38);
-                    }
-                    
-                    count++;
-                }
-                
-                // Légende des risques en bas
-                const legendY = 620;
-                ctx.fillStyle = '#333';
-                ctx.font = 'bold 18px Arial';
-                ctx.textAlign = 'center';
-                ctx.fillText('Niveaux de risque', canvas.width / 2, legendY);
-                
-                const colors = [
-                    { label: 'Vert', color: '#10b981' },
-                    { label: 'Jaune', color: '#fbbf24' },
-                    { label: 'Orange', color: '#f59e0b' },
-                    { label: 'Rouge', color: '#ef4444' },
-                    { label: 'Violet', color: '#a855f7' }
-                ];
-                
-                const legendStartX = 200;
-                colors.forEach((item, index) => {
-                    const x = legendStartX + index * 180;
-                    ctx.fillStyle = item.color;
-                    ctx.fillRect(x, legendY + 10, 30, 30);
-                    ctx.fillStyle = '#333';
-                    ctx.font = '14px Arial';
-                    ctx.textAlign = 'left';
-                    ctx.fillText(item.label, x + 40, legendY + 30);
-                });
-                
-                // Alertes actives
-                let alertY = legendY + 60;
-                ctx.fillStyle = '#333';
-                ctx.font = 'bold 16px Arial';
-                ctx.textAlign = 'center';
-                
-                const alertes = [];
-                ['matin', 'apres-midi'].forEach(periode => {
-                    Object.entries(meteoConfig.villes).forEach(([ville, data]) => {
-                        const maxRisque = getMaxRisque(data[periode].risques);
-                        if (maxRisque.niveau >= 3) {
-                            const periodLabel = periode === 'matin' ? 'Matin' : 'Après-midi';
-                            alertes.push(periodLabel + ' - ' + ville + ' - ' + risqueLabels[maxRisque.phenomene] + ' (' + maxRisque.niveau + '/5)');
-                        }
-                    });
-                });
-                
-                if (alertes.length > 0) {
-                    ctx.fillText('⚠️ Alertes actives :', canvas.width / 2, alertY);
-                    ctx.font = '14px Arial';
-                    alertes.slice(0, 3).forEach((alerte, index) => {
-                        ctx.fillText(alerte, canvas.width / 2, alertY + 25 + index * 20);
-                    });
-                }
-                
-                // Copyright en bas à droite
+
                 ctx.fillStyle = '#333';
                 ctx.font = 'bold 16px Arial';
                 ctx.textAlign = 'right';
                 ctx.fillText('© Ciel du Morbihan', canvas.width - 30, canvas.height - 20);
-                
-                // Télécharger l'image
+
                 const dataURL = canvas.toDataURL('image/png');
                 const link = document.createElement('a');
-                const filename = 'meteo-bretagne-' + currentPeriod + '-' + new Date().toISOString().split('T')[0] + '.png';
-                link.download = filename;
+                link.download = 'meteo-bretagne-' + currentPeriod + '-' + new Date().toISOString().split('T')[0] + '.png';
                 link.href = dataURL;
                 link.click();
-                
+
                 btn.textContent = '✅ Exporté !';
                 setTimeout(() => {
                     btn.textContent = '📸 Exporter la carte';
                     btn.disabled = false;
                 }, 2000);
-                
+
             } catch (error) {
-                console.error('Erreur lors de l\'export:', error);
+                console.error('Erreur export:', error);
                 btn.textContent = '❌ Erreur';
                 setTimeout(() => {
                     btn.textContent = '📸 Exporter la carte';
@@ -1365,18 +1006,12 @@
         function checkAndDisplayAlerts() {
             const alertContainer = document.getElementById('alert-container');
             alertContainer.innerHTML = '';
-            
-            // Vérifier MATIN et APRÈS-MIDI séparément
-            const periodes = ['matin', 'apres-midi'];
-            
-            periodes.forEach(periode => {
+
+            ['matin', 'apres-midi'].forEach(periode => {
                 let maxRisqueGlobal = { niveau: 0, villes: [] };
-                
-                // Parcourir toutes les villes pour cette période
+
                 Object.entries(meteoConfig.villes).forEach(([ville, data]) => {
-                    const periodData = data[periode];
-                    const maxRisque = getMaxRisque(periodData.risques);
-                    
+                    const maxRisque = getMaxRisque(data[periode].risques);
                     if (maxRisque.niveau >= 3) {
                         if (maxRisque.niveau > maxRisqueGlobal.niveau) {
                             maxRisqueGlobal = {
@@ -1389,38 +1024,28 @@
                         }
                     }
                 });
-                
-                // Afficher l'alerte si risque >= 3
+
                 if (maxRisqueGlobal.niveau >= 3) {
                     const alertClass = maxRisqueGlobal.niveau >= 5 ? 'violet' : '';
                     const alertLevel = maxRisqueGlobal.niveau === 3 ? 'ORANGE' : maxRisqueGlobal.niveau === 4 ? 'ROUGE' : 'VIOLET';
-                    const villesText = maxRisqueGlobal.villes.length > 3 
+                    const villesText = maxRisqueGlobal.villes.length > 3
                         ? maxRisqueGlobal.villes.slice(0, 3).join(', ') + ' et ' + (maxRisqueGlobal.villes.length - 3) + ' autre(s)'
                         : maxRisqueGlobal.villes.join(', ');
-                    
+
                     const periodLabel = periode === 'matin' ? 'Matin' : 'Après-midi';
-                    
                     const alert = document.createElement('div');
                     alert.className = 'alert-banner ' + alertClass;
                     alert.innerHTML = '<div class="alert-icon">⚠️</div><div class="alert-content"><h3>' + periodLabel + ' - Vigilance ' + alertLevel + ' - ' + risqueLabels[maxRisqueGlobal.phenomene] + '</h3><p>Secteurs concernés : ' + villesText + '</p></div>';
-                    
                     alertContainer.appendChild(alert);
                 }
             });
         }
 
         function updateRiskBadges() {
-            // Supprimer les anciens badges
             document.querySelectorAll('.risk-badge').forEach(badge => badge.remove());
-            
-            // Calculer les risques pour la période ACTUELLE uniquement
-            let risquesParType = {
-                vent: 0,
-                temps: 0,
-                temperature: 0
-            };
-            
-            // Vérifier seulement la période sélectionnée
+
+            let risquesParType = { vent: 0, temps: 0, temperature: 0 };
+
             Object.values(meteoConfig.villes).forEach(data => {
                 const periodData = data[currentPeriod];
                 Object.entries(periodData.risques).forEach(([type, niveau]) => {
@@ -1432,12 +1057,11 @@
                     }
                 });
             });
-            
-            // Ajouter les badges sur les boutons
+
             document.querySelectorAll('.btn-display').forEach(btn => {
                 const displayType = btn.dataset.display;
                 const risqueNiveau = risquesParType[displayType];
-                
+
                 if (risqueNiveau >= 3) {
                     const badge = document.createElement('span');
                     const badgeClass = risqueNiveau === 3 ? 'orange' : risqueNiveau === 4 ? 'red' : 'violet';
@@ -1451,24 +1075,10 @@
         function updateLastUpdateTime() {
             const lastUpdate = new Date(meteoConfig.dateMiseAJour);
             const now = new Date();
-            
-            const options = {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            };
-            
-            const formattedDate = lastUpdate.toLocaleDateString('fr-FR', options);
-            
-            // Calculer le temps écoulé
             const diffMs = now - lastUpdate;
             const diffMins = Math.floor(diffMs / 60000);
             const diffHours = Math.floor(diffMins / 60);
-            const diffDays = Math.floor(diffHours / 24);
-            
+
             let timeAgo = '';
             if (diffMins < 1) {
                 timeAgo = 'à l\'instant';
@@ -1476,12 +1086,10 @@
                 timeAgo = 'il y a ' + diffMins + ' minute' + (diffMins > 1 ? 's' : '');
             } else if (diffHours < 24) {
                 timeAgo = 'il y a ' + diffHours + ' heure' + (diffHours > 1 ? 's' : '');
-            } else if (diffDays < 7) {
-                timeAgo = 'il y a ' + diffDays + ' jour' + (diffDays > 1 ? 's' : '');
             } else {
-                timeAgo = 'le ' + formattedDate;
+                timeAgo = 'le ' + lastUpdate.toLocaleDateString('fr-FR');
             }
-            
+
             document.getElementById('last-update').textContent = '🕒 Dernière mise à jour : ' + timeAgo;
         }
 
@@ -1505,31 +1113,23 @@
                     displayWeatherIcons();
                 });
             });
-            
+
             updateRiskBadges();
         }
 
         function loadMap() {
             const container = document.getElementById('map-container');
-            
+
             if (meteoConfig.carteImage) {
-                container.innerHTML = '<img id="map-image" src="' + meteoConfig.carteImage + '" alt="Carte Bretagne" style="max-width: 100%; height: auto; display: block;">';
-                
-                // Attendre que l'image soit complètement chargée
+                container.innerHTML = '<img id="map-image" src="' + meteoConfig.carteImage + '" alt="Carte Bretagne">';
                 const img = document.getElementById('map-image');
-                
+
                 if (img.complete) {
-                    // Image déjà en cache
                     setTimeout(() => displayWeatherIcons(), 100);
                 } else {
-                    // Attendre le chargement
-                    img.addEventListener('load', function() {
-                        setTimeout(() => displayWeatherIcons(), 100);
-                    });
-                    
-                    // Sécurité en cas d'erreur
-                    img.addEventListener('error', function() {
-                        console.error('Erreur de chargement de l\'image');
+                    img.addEventListener('load', () => setTimeout(() => displayWeatherIcons(), 100));
+                    img.addEventListener('error', () => {
+                        console.error('Erreur chargement image');
                         displayWeatherIcons();
                     });
                 }
@@ -1538,18 +1138,28 @@
 
         function displayWeatherIcons() {
             const container = document.getElementById('map-container');
-            
+            const mapImage = document.getElementById('map-image');
+
             document.querySelectorAll('.weather-icon').forEach(icon => icon.remove());
+            if (!mapImage) return;
+
+            const rect = mapImage.getBoundingClientRect();
+            const containerRect = container.getBoundingClientRect();
 
             Object.entries(meteoConfig.villes).forEach(([ville, data]) => {
                 const periodData = data[currentPeriod];
                 const icon = document.createElement('div');
                 icon.className = 'weather-icon';
-                icon.style.left = data.x + 'px';
-                icon.style.top = data.y + 'px';
                 
+                const xPos = (data.xPercent / 100) * rect.width;
+                const yPos = (data.yPercent / 100) * rect.height;
+                const offsetX = rect.left - containerRect.left;
+                const offsetY = rect.top - containerRect.top;
+                
+                icon.style.left = (offsetX + xPos) + 'px';
+                icon.style.top = (offsetY + yPos) + 'px';
+
                 if (currentDisplay === 'temps') {
-                    // Utiliser icônes personnalisées ou icônes SVG intégrées
                     if (meteoConfig.utiliserIconesPersonnalisees) {
                         const imgSrc = meteoConfig.cheminIcones + periodData.temps + meteoConfig.extensionIcones;
                         icon.innerHTML = '<img src="' + imgSrc + '" style="width: 100%; height: 100%; object-fit: contain;" alt="' + periodData.temps + '">';
@@ -1558,10 +1168,10 @@
                     }
                 } else if (currentDisplay === 'vent') {
                     const angle = directionAngles[periodData.direction] || 0;
-                    icon.innerHTML = '<div style="background: linear-gradient(135deg, #4ade80, #10b981); width: 60px; height: 60px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.85rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2); position: relative;"><div style="font-size: 1.2rem; transform: rotate(' + angle + 'deg);">➤</div><div style="font-size: 0.75rem; margin-top: 2px;">' + periodData.vent + ' km/h</div></div>';
+                    icon.innerHTML = '<div style="background: linear-gradient(135deg, #4ade80, #10b981); width: 100%; height: 100%; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.7rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2);"><div style="font-size: 1rem; transform: rotate(' + angle + 'deg);">➤</div><div style="font-size: 0.65rem; margin-top: 2px;">' + periodData.vent + ' km/h</div></div>';
                 } else if (currentDisplay === 'temperature') {
                     const tempColor = periodData.temperature < 5 ? '#3b82f6' : periodData.temperature < 15 ? '#10b981' : '#f59e0b';
-                    icon.innerHTML = '<div style="background: ' + tempColor + '; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">' + periodData.temperature + '°C</div>';
+                    icon.innerHTML = '<div style="background: ' + tempColor + '; width: 100%; height: 100%; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">' + periodData.temperature + '°C</div>';
                 }
 
                 icon.addEventListener('click', () => showCityInfo(ville));
@@ -1573,52 +1183,43 @@
             selectedCity = ville;
             const data = meteoConfig.villes[ville];
             const periodData = data[currentPeriod];
-            
             const periodLabel = currentPeriod === "matin" ? "Matin" : "Après-midi";
-            
-            // Trouver le risque maximum
             const maxRisque = getMaxRisque(periodData.risques);
-            
-            // Créer la liste des risques actifs triés par niveau
+
             const risquesActifs = [];
             Object.entries(periodData.risques).forEach(([type, niveau]) => {
-                if (niveau > 0) {
-                    risquesActifs.push({ type, niveau });
-                }
+                if (niveau > 0) risquesActifs.push({ type, niveau });
             });
             risquesActifs.sort((a, b) => b.niveau - a.niveau);
-            
+
             let html = '<div class="selected-city"><h3>' + ville + '</h3><div class="weather-summary">' + (tempsLabels[periodData.temps] || periodData.temps) + ' - ' + periodLabel + '</div>';
-            
             html += '<div class="param-grid"><div class="param-box"><div class="param-label">🌡️ Température</div><div class="param-value">' + periodData.temperature + '°C</div><div style="font-size: 0.75rem; margin-top: 5px; opacity: 0.85;">Min: ' + periodData.temperatureMin + '°C | Max: ' + periodData.temperatureMax + '°C</div></div><div class="param-box"><div class="param-label">💨 Vent</div><div class="param-value">' + periodData.vent + ' km/h</div><div style="font-size: 0.85rem; margin-top: 5px; opacity: 0.9;">Direction: ' + (directionLabels[periodData.direction] || periodData.direction) + '</div></div></div>';
-            
-            // Afficher le risque principal
+
             if (maxRisque.niveau > 0) {
                 const percentageWidth = maxRisque.niveau > 4 ? 100 : (maxRisque.niveau * 25);
                 html += '<div class="risk-indicator"><div class="risk-title">⚠️ Risque principal : ' + risqueLabels[maxRisque.phenomene] + ' (' + maxRisque.niveau + '/5)</div><div class="risk-bar"><div class="risk-fill" style="width: ' + percentageWidth + '%; background: ' + getRisqueColor(maxRisque.niveau) + ';">' + maxRisque.niveau + '/5</div></div><div class="risk-description">' + risqueNiveauDescriptions[maxRisque.niveau] + '</div>';
-                
-                // Afficher les autres risques s'il y en a
+
                 if (risquesActifs.length > 1) {
                     html += '<div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.3);"><div style="font-size: 0.9rem; font-weight: 600; margin-bottom: 10px;">Autres phénomènes :</div>';
-                    
                     risquesActifs.forEach(risque => {
                         if (risque.type !== maxRisque.phenomene) {
                             html += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; background: rgba(255,255,255,0.1); padding: 8px 12px; border-radius: 6px;"><span style="font-size: 0.85rem;">' + risqueLabels[risque.type] + '</span><span style="font-weight: 700; font-size: 0.9rem;">' + risque.niveau + '/5</span></div>';
                         }
                     });
-                    
                     html += '</div>';
                 }
-                
                 html += '</div>';
             } else {
                 html += '<div class="risk-indicator"><div class="risk-title">✅ Pas de risque particulier</div><div class="risk-bar"><div class="risk-fill" style="width: 25%; background: #10b981;">Vert</div></div><div class="risk-description">Conditions météo favorables</div></div>';
             }
-            
+
             html += '</div>';
-            
             document.getElementById('city-info').innerHTML = html;
         }
+
+        window.addEventListener('resize', () => {
+            if (currentDisplay) displayWeatherIcons();
+        });
 
         init();
     </script>
