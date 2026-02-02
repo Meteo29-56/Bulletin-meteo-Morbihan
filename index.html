@@ -618,7 +618,7 @@
                     matin: {
                         temps: "variable-averses",
                         vent: 40,
-                        direction: "S0",
+                        direction: "SO",
                         temperature: 7,
                         risques: { vent: 0, pluie: 0, neige: 0, orage: 0, canicule: 0, grand_froid: 0 }
                     },
@@ -745,8 +745,8 @@
         };
 
         const directionAngles = {
-            "N": 0, "NE": 45, "E": 90, "SE": 135,
-            "S": 180, "SO": 225, "O": 270, "NO": 315
+            "N": 180, "NE": 225, "E": 270, "SE": 315,
+            "S": 360, "SO": 45, "O": 90, "NO": 135
         };
 
         const directionLabels = {
